@@ -1,0 +1,81 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2306                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+actions
+(
+    heaterset
+    {
+        name    heaterCellSet;
+        type    cellSet;
+        action  new;
+        source  boxToCell;
+		boxes
+		(
+			(-1 -1 -1) (2e-3 1 1)
+			//(1.8e-2 -1 -1) (1 1 1)
+		);
+    }
+    {
+        name    heater;
+        type    cellZoneSet;
+        action  new;
+        source  setToCellZone;
+        set     heaterCellSet;
+    }
+
+    // coolerset
+    // {
+    //     name    coolerCellSet;
+    //     type    cellSet;
+    //     action  new;
+    //     source  boxToCell;
+	// 	boxes
+	// 	(
+	// 		//(-1 -1 -1) (2e-3 1 1)
+	// 		(1.8e-2 -1 -1) (1 1 1)
+	// 	);
+    // }
+    // {
+    //     name    cooler;
+    //     type    cellZoneSet;
+    //     action  new;
+    //     source  setToCellZone;
+    //     set     coolerCellSet;
+    // }
+
+    waterset
+    {
+        name    waterCellSet;
+        type    cellSet;
+        action  new;
+        source  boxToCell;
+		boxes
+		(
+			(2e-3 -1 -1) (1.8e-2 1 1)
+		);
+    }
+    {
+        name    water;
+        type    cellZoneSet;
+        action  new;
+        source  setToCellZone;
+        set     waterCellSet;
+    }
+
+);
+
+
+// ************************************************************************* //
