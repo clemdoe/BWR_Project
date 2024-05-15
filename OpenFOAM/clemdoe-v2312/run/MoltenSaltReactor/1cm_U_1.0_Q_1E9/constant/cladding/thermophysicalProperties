@@ -1,0 +1,65 @@
+/*--------------------------------*- C++ -*----------------------------------* \
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2306                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      thermophysicalProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+thermoType
+{
+    type            heSolidThermo;
+    mixture         pureMixture;
+    // transport       constIso;
+    // thermo          hConst;
+    // equationOfState rhoConst;
+    transport       polynomial;
+    thermo          hPolynomial;
+    equationOfState icoPolynomial;
+    specie          specie;
+    energy          sensibleEnthalpy;
+}
+
+mixture
+{
+    specie
+    {
+        molWeight   50;
+    }
+    transport
+    {
+        // Aproximate value for Zr @ 1600 K from TRACE manual correlation
+        // in DONJON is set in the input of THM module
+        kappaCoeffs<8>  ( 35 0 0 0 0 0 0 0 );
+        // kappa   35;
+    }
+    thermodynamics
+    {
+        // Zircaloy from THMGCD.f :  Cp(T)  = 226.7+0.2066*T-0.6492E-04*T**2.0  (T<1090.0)
+        //                                  = -7189 + 6.94*T                    (1090K<=T<1169.0K) 
+        //                                  = 9312.9-7.177*T                    (T>=1243.0)
+        Hf              0;
+        Sf              0;
+        // CpCoeffs<8>     ( -7189 6.94 0 0 0 0 0 0 );
+        CpCoeffs<8>     ( 226.7 0.2066 0.6492E-04 0 0 0 0 0 );
+        // Hf      0;
+        // Cp      450;
+    }
+    equationOfState
+    {
+        // Zircaloy: RHO = 6690.0 - 0.1855*T from THMGCD.f
+        rhoCoeffs<8>    ( 6690.0 -0.1855 0 0 0 0 0 0 );
+        // rho     6500;
+    }
+}
+
+
+// ************************************************************************* //

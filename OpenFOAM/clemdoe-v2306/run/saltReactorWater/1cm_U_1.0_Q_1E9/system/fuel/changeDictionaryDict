@@ -1,0 +1,172 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2306                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      changeDictionaryDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+boundary
+{
+    front
+    {
+        type            symmetry;
+    }
+
+    "(top|bottom)"
+    {
+        type            patch;
+    }
+
+    fuel_to_cladding
+    {
+        type            mappedWall;
+        inGroups        1 ( wall );
+        sampleMode      nearestPatchFace;
+        sampleRegion    cladding;
+        samplePatch     cladding_to_fuel;
+    }
+}
+
+T
+{
+    internalField   uniform 1000;
+
+    boundaryField
+    {
+        ".*"
+        {
+            type            zeroGradient;
+            value           $internalField;
+        }
+
+        front
+        {
+            type            symmetry;
+            value           $internalField;
+        }
+
+        fuel_to_cladding
+        {
+            type            compressible::turbulentTemperatureRadCoupledMixed;
+            Tnbr            T;
+            kappaMethod     solidThermo;
+            value           $internalField;
+        }
+
+        "heater_to_.*"
+        {
+            type            compressible::turbulentTemperatureRadCoupledMixed;
+            Tnbr            T;
+            kappaMethod     solidThermo;
+            value           $internalField;
+        }
+    }
+}
+
+epsilon
+{
+    boundaryField
+    {
+
+        front
+        {
+            type            symmetry;
+        }
+    }
+}
+
+k
+{
+    boundaryField
+    {
+
+        front
+        {
+            type            symmetry;
+        }
+    }
+}
+
+p
+{
+    boundaryField
+    {
+
+        front
+        {
+            type            symmetry;
+        }
+    }
+}
+
+p_rgh
+{
+    boundaryField
+    {
+
+        front
+        {
+            type            symmetry;
+        }
+    }
+}
+
+U
+{
+    boundaryField
+    {
+
+        front
+        {
+            type            symmetry;
+        }
+    }
+}
+
+alphat
+{
+    boundaryField
+    {
+
+        front
+        {
+            type            symmetry;
+        }
+    }
+}
+
+nut
+{
+    boundaryField
+    {
+
+        front
+        {
+            type            symmetry;
+        }
+    }
+}
+
+omega
+{
+    boundaryField
+    {
+
+        front
+        {
+            type            symmetry;
+        }
+    }
+}
+
+
+// ************************************************************************* //

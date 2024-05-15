@@ -1,0 +1,92 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2306                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    object          fvSolution;
+}
+
+solvers
+{
+    rho
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-07;
+        relTol          0;
+    }
+    p_rgh
+    {
+        solver          GAMG;
+        tolerance       1e-07;
+        relTol          0.01;
+        smoother        GaussSeidel;
+    }
+    "(U|h|k|epsilon|omega|G|Ii)"
+    {
+        solver          PBiCGStab;
+        preconditioner  DILU;
+        tolerance       1e-07;
+        relTol          0.1;
+    }
+    G
+    {
+        "$p_rgh"        ;
+        tolerance       1e-05;
+        relTol          0.1;
+    }
+}
+
+SIMPLE
+{
+    momentumPredictor yes;
+    nNonOrthogonalCorrectors 1;
+    pRefCell        0;
+    pRefValue       0;
+    // rhoMin          0.2;
+    // rhoMax          2;
+    residualControl
+    {
+        p_rgh           1e-4;
+        U               1e-4;
+        h               1e-4;
+
+        // possibly check turbulence fields
+        "(k|epsilon|omega)" 1e-3;
+    }
+}
+
+factor 0.9;
+relaxationFactors
+{
+    fields
+    {
+        rho             1;
+        p_rgh           0.7;
+    }
+    equations
+    {
+        U               0.3;
+        /* h               0.7; */
+        /* "(k|epsilon|omega)" 0.7; */
+        /* G               0.7; */
+        /* "ILambda.*"     0.7; */
+        /* qr              0.7; */
+        h               $factor;
+        "(k|epsilon|omega)" 0.7;
+        /* G               $factor; */
+        /* "ILambda.*"     $factor; */
+        /* qr              $factor; */
+    }
+}
+
+
+// ************************************************************************* //

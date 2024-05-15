@@ -1,0 +1,18 @@
+<?xml version='1.0'?>
+<!-- time='0' -->
+<VTKFile type='vtkMultiBlockDataSet' version='1.0' byte_order='LittleEndian' header_type='UInt64'>
+  <vtkMultiBlockDataSet>
+    <DataSet name='internal' file='PhaseII_Ex2_04_6770_0/internal.vtu' />
+    <Block name='boundary'>
+      <DataSet name='inlet' file='PhaseII_Ex2_04_6770_0/boundary/inlet.vtp' />
+      <DataSet name='outlet' file='PhaseII_Ex2_04_6770_0/boundary/outlet.vtp' />
+      <DataSet name='fixedWalls' file='PhaseII_Ex2_04_6770_0/boundary/fixedWalls.vtp' />
+      <DataSet name='frontAndright' file='PhaseII_Ex2_04_6770_0/boundary/frontAndright.vtp' />
+    </Block>
+  </vtkMultiBlockDataSet>
+  <FieldData>
+    <DataArray type='Float32' Name='TimeValue' NumberOfTuples='1' format='ascii'>
+0
+    </DataArray>
+  </FieldData>
+</VTKFile>

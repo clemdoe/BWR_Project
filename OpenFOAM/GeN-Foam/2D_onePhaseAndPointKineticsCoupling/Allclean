@@ -1,0 +1,3 @@
+#!/bin/sh
+rm -rf steady* transient*
+rm -rf *.log log.* *.out

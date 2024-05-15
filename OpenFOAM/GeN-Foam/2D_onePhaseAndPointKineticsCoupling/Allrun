@@ -1,0 +1,110 @@
+#!/bin/sh
+# Tutorial prepared based on the PhD work of Peter German (Texas A&M, peter.german@tamu.edu)
+
+cd ${0%/*} || exit 1    # Run from this directory
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+exe="GeN-Foam"
+
+cases="steadyState transientNoDriveline transientWithDriveline transientWithBoron"
+
+runCloneCase()
+{
+    printf "Cloning $1 to case $2..."
+    cp -r $1 $2
+    printf "$1 cloned!\n"
+}
+
+setSteadyState()
+{
+    runCloneCase $1 $2
+    printf "Setting steady state...\n"
+    foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry model -set diffusionNeutronics
+    foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set true
+    foamDictionary $2/system/controlDict -entry startTime -set 0
+    foamDictionary $2/system/controlDict -entry endTime -set 100
+    foamDictionary $2/system/controlDict -entry deltaT -set 1
+    foamDictionary $2/system/controlDict -entry writeControl -set adjustableRunTime
+    foamDictionary $2/system/controlDict -entry writeInterval -set 100
+}
+
+setTransientNoDriveline()
+{
+    runCloneCase $1 $2
+    printf "Setting transient without driveline case...\n"
+    foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry model -set pointKinetics
+    foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
+    foamDictionary $2/system/controlDict -entry startTime -set 100
+    foamDictionary $2/system/controlDict -entry endTime -set 200
+    foamDictionary $2/system/controlDict -entry deltaT -set 1e-6
+    foamDictionary $2/system/controlDict -entry writeControl -set timeStep
+    foamDictionary $2/system/controlDict -entry writeInterval -set 10
+    foamDictionary $2/constant/neutroRegion/nuclearData -entry absoluteDrivelineExpansionCoeff -set 0.0
+}
+
+setTransientWithDriveline()
+{
+    runCloneCase $1 $2
+    printf "Setting transient with driveline case...\n"
+    foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry model -set pointKinetics
+    foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
+    foamDictionary $2/constant/neutroRegion/nuclearData -entry absoluteDrivelineExpansionCoeff -set 0.0
+    foamDictionary $2/system/controlDict -entry startTime -set 100
+    foamDictionary $2/system/controlDict -entry endTime -set 200
+    foamDictionary $2/system/controlDict -entry deltaT -set 1e-6
+    foamDictionary $2/system/controlDict -entry writeControl -set timeStep
+    foamDictionary $2/system/controlDict -entry writeInterval -set 10
+    foamDictionary $2/constant/neutroRegion/nuclearData -entry absoluteDrivelineExpansionCoeff -set 8e-5
+}
+
+
+setTransientWithBoron()
+{
+    runCloneCase $1 $2
+    printf "Setting transient with driveline case...\n"
+    rm $2/constant/neutroRegion/nuclearData
+    cp $2/constant/neutroRegion/nuclearData_withBoron $2/constant/neutroRegion/nuclearData
+    foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry model -set pointKinetics
+    foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
+    foamDictionary $2/constant/neutroRegion/nuclearData -entry absoluteDrivelineExpansionCoeff -set 0.0
+    foamDictionary $2/system/controlDict -entry startTime -set 100
+    foamDictionary $2/system/controlDict -entry endTime -set 200
+    foamDictionary $2/system/controlDict -entry deltaT -set 1e-6
+    foamDictionary $2/system/controlDict -entry writeControl -set timeStep
+    foamDictionary $2/system/controlDict -entry writeInterval -set 10
+}
+
+for caseName in $cases
+do
+    case "$caseName" in
+    "steadyState")
+        setSteadyState rootCase $caseName
+        ;;
+    "transientNoDriveline")
+        setTransientNoDriveline steadyState $caseName
+        ;;
+    "transientWithDriveline")
+        setTransientWithDriveline steadyState $caseName
+        ;;
+    "transientWithBoron")
+        setTransientWithBoron steadyState $caseName
+        ;;
+    esac
+
+    # Start gnuplot if it exist
+    if command -v gnuplot &> /dev/null
+    then
+        gnuplot -e "log='$caseName/log.$exe'" residuals - &> /dev/null &
+    else
+        echo "gnuplot could not be found"
+    fi
+
+    printf "Running $exe on $caseName\n"
+    $exe -case $caseName 2>&1 | tee "$caseName/log.$exe"
+
+    # Kill gnuplot if it was started
+    pkill -x gnuplot &> /dev/null &
+
+done

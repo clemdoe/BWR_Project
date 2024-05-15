@@ -1,0 +1,60 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      nuclearData;
+}
+fastNeutrons            false; 	//- If true, interpolates cross section with 
+								//  logarithmic temp for fuel (otherwise, 
+								//  square root)
+
+adjustDiscFactors       false;
+
+useGivenDiscFactors     false;
+
+energyGroups 1;
+
+promptGenerationTime 	1e-6;
+
+precGroups 6; 
+
+Beta
+(
+    7.2315e-05
+    0.000609661
+    0.000471181
+    0.00118907
+    0.000445487
+    9.58515e-05
+);
+
+lambda
+(
+    0.0125371
+    0.0300828
+    0.109879
+    0.325484
+    1.3036
+    9.51817
+);
+
+feedbackCoeffTFuel 0;
+feedbackCoeffTStruct 0;
+feedbackCoeffTStructMech 0;
+feedbackCoeffTCool 0;
+feedbackCoeffTClad 0;
+feedbackCoeffRhoCool 0;
+feedbackCoeffFastDoppler 0;
+absoluteDrivelineExpansionCoeff 0;
+
+zones
+();

@@ -1,0 +1,131 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2306                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     chtMultiRegionSimpleFoam;
+
+startFrom       startTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         10000;
+
+deltaT          1;
+
+writeControl    timeStep;
+
+writeInterval   500;
+
+purgeWrite      10;
+
+writeFormat     ascii;
+
+writePrecision  7;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable true;
+
+functions
+{
+    multiRegion
+    {
+        type    multiRegion;
+        libs    (utilityFunctionObjects);
+
+        // regions ( ".*Air" );
+
+        function
+        {
+            // Actual object specification
+            type    fieldMinMax;
+            libs    (fieldFunctionObjects);
+            fields  (T);
+        }
+    }
+
+    htc
+    {
+        type            heatTransferCoeff;
+        libs            (fieldFunctionObjects);
+        field           T;
+        writeControl    writeTime;
+        writeInterval   1;
+        // htcModel        fixedReferenceTemperature;
+        // TRef            373;
+        htcModel        localReferenceTemperature;
+        patches         (coolant_to_cladding);
+        region          coolant;
+    }
+
+    axialProfile
+    {
+        type            sets;
+        enabled         true;
+        verbose         true;
+        interpolationScheme cellPoint;
+        writeControl    writeTime;
+        writeInterval   1;
+        setFormat       csv;
+        fields          (".*");
+        /* fields          (T); */
+        region          coolant;
+        sets
+            (
+            axialLine
+            {
+                type    uniform;
+                axis    z;
+                start   (0.0 6.3E-3 0.0);
+                end     (0.0 6.3E-3 1.0E-2);
+                nPoints 100;
+            }
+            );
+    }
+
+    radialProfile
+    {
+        type            sets;
+        enabled         true;
+        verbose         true;
+        interpolationScheme cellPoint;
+        writeControl    writeTime;
+        writeInterval   1;
+        setFormat       csv;
+        fields          (".*");
+        /* fields          (T); */
+        region          coolant;
+        sets
+            (
+            radialLine
+            {
+                type    uniform;
+                axis    xyz;
+                start   (0.0 0.0 1.0E-2);
+                end     (6.3E-3 6.3E-3 1.0E-2);
+                nPoints 100;
+            }
+            );
+    }
+}
+
+
+// ************************************************************************* //

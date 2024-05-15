@@ -1,0 +1,48 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2306                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+FoamFile
+{
+    version         2;
+    format          ascii;
+    arch            "LSB;label=32;scalar=64";
+    class           volScalarField;
+    location        "0/cladding";
+    object          cellToRegion;
+}
+
+dimensions      [ 0 0 0 0 0 0 0 ];
+
+internalField   uniform 2;
+
+boundaryField
+{
+    bottom
+    {
+        type            zeroGradient;
+    }
+    front
+    {
+        type            symmetry;
+    }
+    top
+    {
+        type            zeroGradient;
+    }
+    cladding_to_coolant
+    {
+        type            zeroGradient;
+    }
+    cladding_to_fuel
+    {
+        type            zeroGradient;
+    }
+}
+
+
+// ************************************************************************* //

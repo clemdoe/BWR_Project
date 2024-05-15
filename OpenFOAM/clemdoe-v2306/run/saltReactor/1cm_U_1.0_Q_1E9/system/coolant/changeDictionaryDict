@@ -1,0 +1,303 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2306                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    object          changeDictionaryDict;
+}
+
+boundary
+{
+    "(inlet|outlet)"
+    {
+        type            patch;
+    }
+    "(right|left|back)"
+    {
+        type            patch;
+    }
+    front
+    {
+        type            symmetry;
+    }
+    coolant_to_cladding
+    {
+        type            mappedWall;
+        inGroups        1 ( wall );
+        sampleMode      nearestPatchFace;
+        sampleRegion    cladding;
+        samplePatch     cladding_to_coolant;
+    }
+}
+
+U
+{
+    internalField   uniform ( 0 0 1.0 );
+    boundaryField
+    {
+        ".*"
+        {
+            type            zeroGradient;
+            value           $internalField;
+        }
+        inlet
+        {
+            type            fixedValue;
+            value           $internalField;
+        }
+        outlet
+        {
+            type            inletOutlet;
+            inletValue      $internalField;
+            value           $internalField;
+        }
+        front
+        {
+            type            symmetry;
+            value           $internalField;
+        }
+        coolant_to_cladding
+        {
+            type            noSlip;
+            value           $internalField;
+        }
+    }
+}
+
+T
+{
+    internalField   uniform 800;
+    boundaryField
+    {
+        ".*"
+        {
+            type            zeroGradient;
+            value           $internalField;
+        }
+        inlet
+        {
+            type            fixedValue;
+            value           $internalField;
+        }
+        outlet
+        {
+            type            inletOutlet;
+            value           $internalField;
+            inletValue      $internalField;
+        }
+        front
+        {
+            type            symmetry;
+            value           $internalField;
+        }
+        "coolant_to_.*"
+        {
+            type            compressible::turbulentTemperatureRadCoupledMixed;
+            Tnbr            T;
+            kappaMethod     fluidThermo;
+            value           $internalField;
+        }
+    }
+}
+
+epsilon
+{
+    internalField   uniform 0.05;
+    boundaryField
+    {
+        ".*"
+        {
+            type            zeroGradient;
+            value           $internalField;
+        }
+        inlet
+        {
+            type            fixedValue;
+            value           $internalField;
+        }
+        "coolant_to_.*"
+        {
+            type            epsilonWallFunction;
+            value           $internalField;
+        }
+        front
+        {
+            type            symmetry;
+            value           $internalField;
+        }
+    }
+}
+
+k
+{
+    internalField   uniform 0.006;
+    boundaryField
+    {
+        ".*"
+        {
+            type            zeroGradient;
+            value           $internalField;
+        }
+        inlet
+        {
+            type            fixedValue;
+            value           $internalField;
+        }
+        "coolant_to_.*"
+        {
+            type            kqRWallFunction;
+            value           $internalField;
+        }
+        front
+        {
+            type            symmetry;
+            value           $internalField;
+        }
+    }
+}
+
+p_rgh
+{
+    internalField   uniform 100000;
+    boundaryField
+    {
+        ".*"
+        {
+            type            zeroGradient;
+            value           $internalField;
+        }
+        inlet
+        {
+            type            fixedFluxPressure;
+            value           $internalField;
+        }
+        outlet
+        {
+            type            fixedValue;
+            value           $internalField;
+        }
+        "coolant_to_.*"
+        {
+            type            fixedFluxPressure;
+            value           $internalField;
+        }
+        front
+        {
+            type            symmetry;
+            value           $internalField;
+        }
+    }
+}
+
+p
+{
+    internalField   uniform 100000;
+    boundaryField
+    {
+        ".*"
+        {
+            type            calculated;
+            value           uniform 100000;
+        }
+        front
+        {
+            type            symmetry;
+            value           $internalField;
+        }
+    }
+}
+
+alphat
+{
+    internalField   uniform 0;
+    boundaryField
+    {
+        ".*"
+        {
+            type            zeroGradient;
+            value           $internalField;
+        }
+        "(inlet|outlet)"
+        {
+            type            calculated;
+            value           $internalField;
+        }
+        "coolant_to_.*"
+        {
+            type            compressible::alphatWallFunction;
+            value           $internalField;
+        }
+        front
+        {
+            type            symmetry;
+            value           $internalField;
+        }
+    }
+}
+
+nut
+{
+    internalField   uniform 0;
+    boundaryField
+    {
+        ".*"
+        {
+            type            zeroGradient;
+            value           $internalField;
+        }
+        "(inlet|outlet)"
+        {
+            type            calculated;
+            value           $internalField;
+        }
+        "coolant_to_.*"
+        {
+            type            nutkWallFunction;
+            value           $internalField;
+        }
+        front
+        {
+            type            symmetry;
+            value           $internalField;
+        }
+    }
+}
+
+omega
+{
+    internalField   uniform 200;
+    boundaryField
+    {
+        ".*"
+        {
+            type            zeroGradient;
+            value           $internalField;
+        }
+        inlet
+        {
+            type            fixedValue;
+            value           $internalField;
+        }
+        "coolant_to_.*"
+        {
+            type            omegaWallFunction;
+            value           $internalField;
+        }
+        front
+        {
+            type            symmetry;
+            value           $internalField;
+        }
+    }
+}
+
+
+// ************************************************************************* //

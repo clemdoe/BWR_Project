@@ -1,0 +1,88 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2312                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       surfaceScalarField;
+    location    "5.7/fluidRegion";
+    object      alphaRhoPhi.liquid;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [1 0 -1 0 0 0 0];
+
+oriented        oriented;
+
+internalField   nonuniform List<scalar> 
+39
+(
+0.296763
+0.296763
+0.296763
+0.296763
+0.296763
+0.296763
+0.296763
+0.296763
+0.296763
+0.296763
+0.296764
+0.296765
+0.296768
+0.296772
+0.296777
+0.296785
+0.296797
+0.296815
+0.296843
+0.296884
+0.296943
+0.297024
+0.297131
+0.297269
+0.29744
+0.297646
+0.297891
+0.298172
+0.298491
+0.298845
+0.299206
+0.299575
+0.29995
+0.300333
+0.300722
+0.301119
+0.301522
+0.301932
+0.302349
+)
+;
+
+boundaryField
+{
+    inlet
+    {
+        type            calculated;
+        value           uniform -0.296763;
+    }
+    outlet
+    {
+        type            calculated;
+        value           uniform 0.302772;
+    }
+    fixedWalls
+    {
+        type            empty;
+        value           nonuniform List<scalar> 0();
+    }
+}
+
+
+// ************************************************************************* //

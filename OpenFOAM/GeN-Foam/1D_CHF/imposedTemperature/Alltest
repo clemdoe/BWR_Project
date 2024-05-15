@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# --- Run from this directory
+cd ${0%/*} || exit 1
+
+# --- Initialize the output file
+resFile=test.out
+rm -rf $resFile
+touch $resFile
+
+# --- Run the simulation
+echo -e "Run tutorial 1D_CHF imposedTemperature ...\n" | tee -a $resFile
+./Allrun >> log.simulation
+echo -e "Done running tutorial 1D_CHF imposedTemperature ...\n" | tee -a $resFile
+
+# --- Check it ran
+endString=$(tail -3 ./log.GeN-Foam | grep End)
+if [ "$endString" = "End" ]; then
+    echo -e "1D_CHF imposedTemperature has converged \n" | tee -a $resFile
+else
+    echo -e "1D_CHF imposedTemperature has NOT converged \n" | tee -a $resFile
+    exit 1
+fi
+
+# --- Recover the results
+input="./40/fluidRegion/heatFlux.structure"
+QwallTop=$(head -40 "$input" | tail -1)
+expectedAt=33423.1
+
+# --- Check that results are correct
+echo "Heat flux of the structure at the top of the channel at 40 seconds" | tee -a $resFile
+if [ $QwallTop = $expectedAt ]; then
+    echo "Perfect match:" | tee -a $resFile
+    echo "|           | Simulated | Expected |" | tee -a $resFile
+    echo "|:----------|:---------:|:--------:|" | tee -a $resFile
+    echo "| Qwall Top | $QwallTop | $expectedAt |" | tee -a $resFile
+else
+    echo "Divergent results:" | tee -a $resFile
+    echo "|           | Simulated | Expected |" | tee -a $resFile
+    echo "|:----------|:---------:|:--------:|" | tee -a $resFile
+    echo "| Qwall Top | $QwallTop | $expectedAt |" | tee -a $resFile
+    exit 1
+fi
+
+# --- Exit successfully
+exit 0

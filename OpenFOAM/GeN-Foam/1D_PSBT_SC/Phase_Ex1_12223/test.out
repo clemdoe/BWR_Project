@@ -1,0 +1,11 @@
+Run tutorial 1D_PSBT_SC ...
+
+Done running tutorial 1D_PSBT_SC ...
+
+1D_PSBT_SC has converged 
+
+alpha.vapour at the end of the channel
+Perfect match:
+|              | Simulated | Expected |
+|:-------------|:---------:|:--------:|
+| alpha vapour | 0.133727 | 0.133727 |

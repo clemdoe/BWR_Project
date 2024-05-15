@@ -1,0 +1,88 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2312                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       surfaceScalarField;
+    location    "6.4/fluidRegion";
+    object      alphaPhi.vapour;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 3 -1 0 0 0 0];
+
+oriented        oriented;
+
+internalField   nonuniform List<scalar> 
+39
+(
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+5.37293e-289
+1.76825e-216
+1.08274e-165
+6.28854e-154
+3.37781e-143
+1.18064e-132
+3.77622e-122
+1.10861e-111
+2.9481e-101
+6.92861e-91
+1.39407e-80
+2.3205e-70
+3.09238e-60
+3.17378e-50
+2.34316e-40
+1.0736e-30
+2.35814e-21
+3.76825e-14
+5.0204e-12
+0.000818941
+0.00106544
+0.00115545
+0.00121337
+0.00126684
+0.00129355
+0.00111124
+0.000647877
+0.000351751
+0.000138837
+)
+;
+
+boundaryField
+{
+    inlet
+    {
+        type            calculated;
+        value           uniform 0;
+    }
+    outlet
+    {
+        type            calculated;
+        value           uniform 0.00039872;
+    }
+    fixedWalls
+    {
+        type            empty;
+        value           nonuniform List<scalar> 0();
+    }
+}
+
+
+// ************************************************************************* //

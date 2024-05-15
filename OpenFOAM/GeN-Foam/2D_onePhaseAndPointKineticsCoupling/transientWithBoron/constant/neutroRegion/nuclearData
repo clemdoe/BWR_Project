@@ -1,0 +1,66 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2312                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    object          nuclearData;
+}
+
+fastNeutrons    true;
+
+promptGenerationTime 1e-06;
+
+Beta            ( 7.2315e-05 0.000609661 0.000471181 0.00118907 0.000445487 9.58515e-05 );
+
+lambda          ( 0.0125371 0.0300828 0.109879 0.325484 1.3036 9.51817 );
+
+feedbackCoeffFastDoppler 0;
+
+feedbackCoeffTFuel -3e-06;
+
+feedbackCoeffTClad 0;
+
+feedbackCoeffTCool 0;
+
+feedbackCoeffRhoCool 0;
+
+feedbackCoeffTStruct 0;
+
+feedbackCoeffTStructMech 0;
+
+absoluteDrivelineExpansionCoeff 0;
+
+controlRodReactivityMap ( ( 0.1 -0.01 ) ( 0 0 ) ( -0.1 0.01 ) );
+
+externalReactivityTimeProfile
+{
+    type            table;
+    table           table ( ( 0 0.000576713 ) );
+}
+
+boronReactivityTimeProfile
+{
+    type            table;
+    table           table ( ( 100 0 ) ( 101 1e-05 ) ( 102 2e-05 ) ( 103 3e-05 ) ( 104 4e-05 ) ( 105 5e-05 ) ( 106 6e-05 ) ( 107 7e-05 ) ( 108 8e-05 ) ( 109 9e-05 ) ( 110 0.0001 ) ( 200 0.0001 ) );
+}
+
+adjustDiscFactors false;
+
+useGivenDiscFactors false;
+
+energyGroups    2;
+
+precGroups      6;
+
+zones           ( zone0 { fuelFraction 1 ; sigmaDisapp nonuniform List<scalar> 2(5 4) ; nuSigmaEff nonuniform List<scalar> 2(1 5.74) ; sigmaPow nonuniform List<scalar> 2{1} ; scatteringMatrixP0 2 2 ( ( 10 5 ) ( 0 10 ) ) ; discFactor nonuniform List<scalar> 2{1} ; chiPrompt nonuniform List<scalar> 2(1 0) ; chiDelayed nonuniform List<scalar> 2{0.5} ; IV nonuniform List<scalar> 2(7.1e-08 0.0045) ; lambda nonuniform List<scalar> 6(0.0125371 0.0300828 0.109879 0.325484 1.3036 9.51817) ; Beta nonuniform List<scalar> 6(7.2315e-05 0.000609661 0.000471181 0.00118907 0.000445487 9.58515e-05) ; D nonuniform List<scalar> 2(0.1 0.04) ; integralFlux nonuniform List<scalar> 2{1} ; } );
+
+
+// ************************************************************************* //

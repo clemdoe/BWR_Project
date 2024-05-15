@@ -1,0 +1,8 @@
+{
+  "file-series-version" : "1.0",
+  "files" : [
+    { "name" : "PhaseII_Ex2_04_6770_0.vtm", "time" : 0 },
+    { "name" : "PhaseII_Ex2_04_6770_1050.vtm", "time" : 10 },
+    { "name" : "PhaseII_Ex2_04_6770_13601.vtm", "time" : 20 }
+  ]
+}

@@ -1,0 +1,185 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2306                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      changeDictionaryDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+boundary
+{
+    front
+    {
+        type            symmetry;
+    }
+
+    "(top|bottom)"
+    {
+        type            patch;
+    }
+
+    cladding_to_coolant
+    {
+        type            mappedWall;
+        inGroups        1 ( wall );
+        sampleMode      nearestPatchFace;
+        sampleRegion    coolant;
+        samplePatch     coolant_to_cladding;
+    }
+
+    cladding_to_fuel
+    {
+        type            mappedWall;
+        inGroups        1 ( wall );
+        sampleMode      nearestPatchFace;
+        sampleRegion    fuel;
+        samplePatch     fuel_to_cladding;
+    }
+}
+
+T
+{
+    internalField   uniform 800;
+
+    boundaryField
+    {
+        front
+        {
+            type            symmetry;
+            value           $internalField;
+        }
+
+        "(top|bottom)"
+        {
+            type            zeroGradient;
+            value           $internalField;
+        }
+        ".*"
+        {
+            type            zeroGradient;
+            value           $internalField;
+        }
+
+        cladding_to_fuel
+        {
+            type            compressible::turbulentTemperatureRadCoupledMixed;
+            Tnbr            T;
+            kappaMethod     solidThermo;
+            value           $internalField;
+        }
+
+        cladding_to_coolant
+        {
+            type            compressible::turbulentTemperatureRadCoupledMixed;
+            Tnbr            T;
+            kappaMethod     solidThermo;
+            value           $internalField;
+        }
+
+    }
+}
+
+epsilon
+{
+    boundaryField
+    {
+
+        front
+        {
+            type            symmetry;
+        }
+    }
+}
+
+k
+{
+    boundaryField
+    {
+
+        front
+        {
+            type            symmetry;
+        }
+    }
+}
+
+p
+{
+    boundaryField
+    {
+
+        front
+        {
+            type            symmetry;
+        }
+    }
+}
+
+p_rgh
+{
+    boundaryField
+    {
+
+        front
+        {
+            type            symmetry;
+        }
+    }
+}
+
+U
+{
+    boundaryField
+    {
+
+        front
+        {
+            type            symmetry;
+        }
+    }
+}
+
+alphat
+{
+    boundaryField
+    {
+
+        front
+        {
+            type            symmetry;
+        }
+    }
+}
+
+nut
+{
+    boundaryField
+    {
+
+        front
+        {
+            type            symmetry;
+        }
+    }
+}
+
+omega
+{
+    boundaryField
+    {
+
+        front
+        {
+            type            symmetry;
+        }
+    }
+}
+// ************************************************************************* //

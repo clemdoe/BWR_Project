@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# --- Run from this directory
+cd ${0%/*} || exit 1
+
+# --- Initialize the output file
+resFile=test.out
+rm -rf $resFile
+touch $resFile
+
+# --- Run the simulation
+echo -e "Run tutorial 1D_boiling ...\n" | tee -a $resFile
+./Allrun >> log.simulation
+echo -e "Done running tutorial 1D_boiling ...\n" | tee -a $resFile
+
+# --- Check it ran
+endString=$(tail -3 ./log.GeN-Foam | grep End)
+if [ "$endString" = "End" ]; then
+    echo -e "1D_boiling has converged \n" | tee -a $resFile
+else
+    echo -e "1D_boiling has NOT converged \n" | tee -a $resFile
+    exit 1
+fi
+
+# --- Exit successfully
+exit 0

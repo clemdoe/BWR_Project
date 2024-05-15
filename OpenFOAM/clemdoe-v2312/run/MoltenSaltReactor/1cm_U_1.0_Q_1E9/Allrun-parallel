@@ -1,0 +1,56 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+# Setup case
+./Allrun.pre
+
+# Remove fluid fields from solid regions (important for post-processing)
+for region in $(foamListRegions solid)
+do
+    rm -f 0/"$region"/{nut,alphat,epsilon,k,U,p_rgh}
+    rm -f processor*/0/"$region"/{nut,alphat,epsilon,k,U,p_rgh}
+done
+
+# Change boundaryFiled in coolant region to consider symmetry
+# foamDictionary 0/coolant/cellToRegion -entry boundaryField.left.type -set "symmetry"
+# foamDictionary 0/coolant/cellToRegion -entry boundaryField.right.type -set "symmetry"
+foamDictionary 0/coolant/cellToRegion -entry boundaryField.front.type -set "symmetry"
+# foamDictionary 0/coolant/cellToRegion -entry boundaryField.back.type -set "symmetry"
+# foamDictionary 0/cladding/cellToRegion -entry boundaryField.right.type -set "symmetry"
+foamDictionary 0/cladding/cellToRegion -entry boundaryField.front.type -set "symmetry"
+# foamDictionary 0/fuel/cellToRegion -entry boundaryField.right.type -set "symmetry"
+foamDictionary 0/fuel/cellToRegion -entry boundaryField.front.type -set "symmetry"
+
+# Decompose
+# runApplication -s coolant decomposePar -region coolant
+# runApplication -s cladding decomposePar -region cladding
+# runApplication -s fuel decomposePar -region fuel
+runApplication decomposePar -allRegions -constant
+
+# Normally the Application should be run with these commands :
+#
+# mpirun -np 4 $(getApplication) -parallel | tee log.$(getApplication)
+# or
+# pyFoamPlotRunner.py --progress --autosense-parallel --hardcopy --with-all --frequency=5 $(getApplication)
+# pyFoamRunner.py --progress --autosense-parallel $(getApplication)
+mpirun -np 40 $(getApplication) -parallel | tee log.$(getApplication)
+#
+# But I have to use this hack since pyFoam is detecting wrong mpirun executable
+# /usr/bin/mpirun -np 4 $(getApplication) -parallel | tee log.$(getApplication)
+# And then run in another therminal to follow the residuals: pyFoamPlotWatcher.py --progress --hardcopy --with-all log.$(getApplication)
+
+# Kill gnuplot if it was started
+# pkill -x gnuplot &> /dev/null
+
+# Reconstruct
+# runApplication -s coolant reconstructPar -region coolant
+# runApplication -s cladding reconstructPar -region cladding
+# runApplication -s fuel reconstructPar -region fuel
+runApplication reconstructPar -allRegions
+
+# Extract T field in coolant to VTK for postprocessing
+runApplication foamToVTK -allRegions -latestTime -fields 'T'
+
+#------------------------------------------------------------------------------

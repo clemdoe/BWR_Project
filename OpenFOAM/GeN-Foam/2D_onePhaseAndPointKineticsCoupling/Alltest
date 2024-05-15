@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# --- Run from this directory
+cd ${0%/*} || exit 1
+
+# --- Initialize the output file
+resFile=test.out
+rm -rf $resFile
+touch $resFile
+
+# --- Run the simulation
+echo -e "Run tutorial 2D_onePhaseAndPointKineticsCoupling ...\n" | tee -a $resFile
+./Allrun >> log.simulation
+echo -e "Done running tutorial 2D_onePhaseAndPointKineticsCoupling ...\n" | tee -a $resFile
+
+# --- Check it ran
+isConverge()
+{
+    folder=$1
+    name=$2
+    string=$(tail -3 ./$folder/log.GeN-Foam | grep End)
+    if [ "$string" = "End" ]; then
+        echo -e "$name has converged \n" | tee -a $resFile
+    else
+        echo -e "$name has NOT converged \n" | tee -a $resFile
+        exit 1
+    fi
+}
+
+isConverge steadyState            "Steady State"
+isConverge transientNoDriveline   "Transient (no driveline)"
+isConverge transientWithDriveline "Transient (with driveline)"
+isConverge transientWithBoron     "Transient (with boron)"
+
+# --- Exit successfully
+exit 0

@@ -1,0 +1,278 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    p_rgh
+    {
+        solver          GAMG;
+        smoother        DIC;
+        tolerance       1e-6;
+        relTol          0;
+    }
+
+    p_rghFinal
+    {
+        $p_rgh;
+        relTol          0;
+    }
+
+    "e.*"
+    {
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-6;
+        relTol          0;
+        minIter         1;
+    }
+
+    "h.*"
+    {
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-6;
+        relTol          0;
+        minIter         1;
+    }
+
+    ".*"
+    {
+        solver          PBiCGStab;
+        preconditioner  diagonal;
+        tolerance       1e-06;
+        relTol          0.001;
+    }
+
+    //- "Solver" dictionary of the phase fraction equations to specify the
+    //  solution algorithm. Two possible algorithms are available, the MULES
+    //  algorithm and a simpler implicit solution algorithm with first-order
+    //  upwind discretization (hard-coded). In short, MULES (which stands for
+    //  Mutli-dimensional Universal Limiter with Explicit Solution) is an
+    //  explicit solution algorithm (i.e. the phase fraction in the advective
+    //  term is treated explicitly) that tries to reach a compromise between
+    //  numerical stability (granted by low-order, e.g. upwind, discretization
+    //  schemes for the treatment of the advective term) and numerical 
+    //  accuracy (achieved by high-order, e.g. van Leer, discretization schemes
+    //  for the treatment of the advective term), and because of this, it 
+    //  requires an explcit treatment of said term as the discretization is
+    //  constructed iteratively via a form of Flux Corrected Transport (FCT)
+    //  tecniques. On the flip-side, the implicit solution algorithm treats the
+    //  advective term implicitly, and used a hard-coded upwind discretization
+    //  for the advective fluxes for maximum stability.
+    //  MULES can be significantly more computationally expensive on larger
+    //  meshes and imposes strict Courant limitations which can be somewhat
+    //  loosened via the use of subCycling. On the flip-side, the implicit
+    //  approach is expected to be significant more diffusive in certain
+    //  scenarios
+    alpha
+    {
+        //- Either implicitUpwind or MULES
+        solver "MULES";
+
+        //- For which phase fraction should the continuity equation be solved?
+        //  If not provided, it defaults to both phase fractions being solved
+        //  and then normalized one against the other. Solving only for one
+        //  phase can significantly reduce simulation times by up to 30%
+        //  depending on the mesh size (the reduction is larger for larger
+        //  meshes)
+        //solvePhase          "vapour";
+
+        //- This keyword is used only by the MULES solver
+        //- If true, the number of times the phase fraction equations are
+        //  are solved is determined by the Co. In particular, the number
+        //  of subCycles is set to ceil(Co/alphaMaxCo) with Co being the
+        //  current global courant number.
+        adjustSubCycles     true;
+
+        //- This keyword is used only by the MULES solver
+        //- Maximum subCycle Courant
+        alphaMaxCo          0.25;
+
+        //- This keyword is used only by the MULES solver
+        //- If provided, limits the maximum amount of subCycles that can be
+        //  performed if adjustSubCycles is true
+        //maxSubCycles M; 
+
+        //- This keyword is used only by the MULES solver
+        //- Only used if adjustSubCycles is false. Defaults to 1.
+        //nSubCycles   N; 
+    }
+}
+
+PIMPLE
+{
+    //- Number of pressure correctors (i.e. PISO iterations) within each outer
+    //  iteration (i.e. PIMPLE iteration). The number of outer iterations is
+    //  set in the global fvSolution file (i.e. controlDict/fvSolution)
+    nCorrectors      12;
+
+    //-
+    nNonOrthogonalCorrectors 0;
+
+    //- The following feature applies only to the twoPhase solver and is
+    //  compatible with all momentumModes (see below)
+    //- Partial elimination improves convergence if the drag coefficient
+    //  between the two fluid phases is sufficiently high. It never hurts
+    //  to use it. The possibe modes of this keyword are:
+    //  -   none, no partial elimination;
+    //  -   explicit, explicit adjustement based on partial elimination,
+    //      this is what is found on currently available multiphase solvers
+    //  -   implicit, "true" partial elimination. This was recently implemented
+    //      by the authors. It grants significantly faster convergence rates
+    //      at the cost of less linear solver pressure iterations when compared
+    //      to the explicit variant
+    partialEliminationMode      implicit;
+
+    //- The following feature applies to both the onePhase and twoPhase solvers
+    //  and defaults to cellCentered. It has an effect with all 
+    //  partialEliminationModes
+    //- This option controls how the pressure equation fluxes due to 
+    //  momentum equation terms are computed. The possible modes are:
+    //  -   cellCentered, the traditional OpenFOAM way. This algorithm is
+    //      know, however, to induce velocity oscillations in the main flow
+    //      direction across porous body interfaces (i.e. sharp porosity 
+    //      changes);
+    //  -   faceCentered, an experimental algorithm implemented from
+    //      some multiphase solvers (e.g. reactingMultiphaseEulerFoam), with 
+    //      minor improvements. All the terms that end in the pressure equation
+    //      are evaulated at the faces and the velocity is reconstructed from
+    //      the fluxes. The time derivative is hard-coded to Euler forward.
+    //      This algorithm appears to be marginally more diffusive than the
+    //      cellCentered one, yet it grants significant advantages in terms
+    //      of velocity oscillation reduction (completely in onePhase,
+    //      partially or completely in twoPhase depending on the 
+    //      oscillationLimiterFraction) and enhanced phase coupling. Currently
+    //      recommended for most applications;
+    //  -   cellCenteredFaceReconstruction, a blending of the cellCentered
+    //      equation construction method and the faceCentered velocity 
+    //      reconstruction method. Mostly for testing purposed, its use is
+    //      currently highly discouraged and the implementation is not yet
+    //      verified;
+    momentumMode                faceCentered;
+
+    //- The following feature only has an effect in the twoPhase solver and 
+    //  only when using the faceCentered momentum algorithm.
+    //- Experimental feature by the authors. This coefficient blends two
+    //  different ways of reconstructing the velocity field after the pressure
+    //  equation solution. If set to 1, the velocity is reconstructed so to
+    //  take into account differences between cell-center porosities and 
+    //  face porosities, so that the resulting velocity field is completely
+    //  free of both oscillations (if not using faceCentered) or smearing 
+    //  (if using face momentum) at porous interfaces. If set to 0, it 
+    //  does nothing. If set in between, it blends the two velocity solutions
+    //  together, reducing oscillations/smearing but eliminating them. The
+    //  issue with always having this set to 1 is that it was noticed that
+    //  while oscillations along the main flow direction were eliminated, in
+    //  certain circumstances (e.g. changes in fluid-structure drag coeff) it
+    //  could acutally lead to velocity oscillations in the plane perpendicular
+    //  to the main flow direction. Fairly ironic. Experiment for yourself and
+    //  see what works
+    oscillationLimiterFraction 0;
+
+    //- If true, pressure corrector iterations within a each PIMPLE iteration
+    //  are performed only as long as the residuals decrease (i.e. it spares
+    //  useless pressure corrector iterations). Defaults to false
+    correctUntilConvergence     true;
+
+    //- The mass transfer term will be limited so that, at max, it will be
+    //  able to result in a 40% reduction of the phase fraction of the
+    //  disappearing phase in each cell. The losses due to this limiter
+    //  are print in the log as "Cumulative dm loss". If these are too 
+    //  large, you are used a time-step that is too large to properly
+    //  resolve boiling. If not provided, defaults to infinity (i.e.
+    //  no limitation on the mass transfer term). Providing this
+    //  can play a role in stabilizing the simulation
+    massTransferSafetyFactor 0.1;
+
+    //- Maximum time derivative that the interfacial temperature is allowed
+    //  to have (acts similarly to an under-relaxation, yet not exactly the
+    //  same thing, should be easy to see why)
+    maxTInterfaceDdt            1e4;
+
+    //-
+    enthalpyStabilizationMode           source;
+
+    residualControl
+    {
+        p_rgh
+        {
+            tolerance 1e-5;
+            relTol 0;
+
+            //- This is only meant to be used for the pressure field. If true,
+            //  the residuals used for the tolerance check consist of the
+            //  initialResidual of the first PISO iteration (i.e. the first
+            //  pressure corrector) of each PIMPLE (i.e. outer) iteration.
+            //  This is a more meaningful metric of convergence in two-phase
+            //  scenarios, rather than the initialResidual of the last PISO
+            //  iteration of each PIMPLE iteration (which is the one that is
+            //  being used if this flag is set to false).
+            useFirstPISOInitialResidual true;
+        }
+
+        h.liquid
+        {
+            tolerance  1e-5;
+            relTol 0;
+        }
+    }
+}
+
+//- The three single most important parameters in the stability of a boiling
+//  simulation are, in order, the mass transfer under-relaxation dmdt, the
+//  vapour enthaply under-relaxation h.vapour, the interfacial temperature
+//  under-relaxation T.interface. In particular, h.vapour requires the heaviest
+//  under-relaxation
+relaxationFactors
+{
+    equations
+    {
+        ".*"            1;
+    }
+
+    //- The two most important relaxation factors for explicitly coupled
+    //  two-phase flows with phaseChange. Adding the "Final" word to 
+    //  any keyword will apply the under-relaxation on the last outer iteration
+    //  too which, while not mathematically correct and while it can result
+    //  in a slow-down of the transient dynamics if too small, it can help
+    //  stabilize the simulation
+    fields
+    {
+        //-
+        "alpha.*"                   0.5;
+
+        //- Under-relaxation of the mass transfer term
+        "dmdt.*"                    0.125;
+
+        //- Under-relaxation of the interfacial temperature between the fluids.
+        //  This only has an effect if the employed saturationModel in
+        //  phaseProperties is not constant (e.g. BrowningPotter). In
+        //  particular, this is required as rapid changes in pressure during 
+        //  boiling will more often than not induce sharp changes in the
+        //  interfacialTemperature, resulting in massive changes in the mass
+        //  transfer term 
+        "T.interface"               0.125;
+        "T.interfaceFinal"          0.125;
+
+        //- Under-relaxation of vapour enthalpy
+        "h.vapour"                  0.0125;
+        "h.vapourFinal"             0.0125;
+    }
+}
+
+// ************************************************************************* //
+

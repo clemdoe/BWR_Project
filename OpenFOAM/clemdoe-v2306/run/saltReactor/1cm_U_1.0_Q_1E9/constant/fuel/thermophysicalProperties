@@ -1,0 +1,62 @@
+/*--------------------------------*- C++ -*----------------------------------* \
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2306                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      thermophysicalProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+thermoType
+{
+    type            heSolidThermo;
+    mixture         pureMixture;
+    // transport       constIso;
+    // thermo          hConst;
+    // equationOfState rhoConst;
+    transport       polynomial;
+    thermo          hPolynomial;
+    equationOfState icoPolynomial;
+    specie          specie;
+    energy          sensibleEnthalpy;
+}
+
+mixture
+{
+    specie
+    {
+        molWeight   50;
+    }
+    transport
+    {
+        // Aproximate value for UO2 @ 1600 K from TRACE manual correlation
+        // in DONJON can be set in the input of THM module
+        kappaCoeffs<8>  ( 2.48 0 0 0 0 0 0 0 );        // W/m-K
+        // kappa   2.48;
+    }
+    thermodynamics
+    {
+        // Aproximate polynomial between 800 and 1600 K using the correlation from THMCCD.f
+        Hf              0;
+        Sf              0;
+        CpCoeffs<8>     ( 190.15 0.299 -0.0003 8E-8 0 0 0 0 );
+        // Hf      0;
+        // Cp      333;
+    }
+    equationOfState
+    {
+        // Aproximate polynomial between 800 and 1600 K using the correlation from THMCCD.f
+        rhoCoeffs<8>    ( 11079 -0.0004 0 0 0 0 0 0 );
+        // rho     10970;
+    }
+}
+
+
+// ************************************************************************* //

@@ -1,0 +1,19 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+# Setup case
+./Allrun.pre
+
+#-- Run on single processor
+
+# runApplication $(getApplication)
+pyFoamPlotRunner.py --clear --progress --auto --hardcopy auto
+
+# Kill gnuplot if it was started
+pkill -x gnuplot &> /dev/null
+
+runApplication foamToEnsight -allRegions
+
+#------------------------------------------------------------------------------

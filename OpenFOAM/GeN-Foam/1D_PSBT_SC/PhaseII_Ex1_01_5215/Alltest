@@ -1,0 +1,74 @@
+#!/bin/bash
+#----------------------------------------------------------------------------#
+#       ______          _   __           ______                              #
+#      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
+#     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \   #
+#    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /   #
+#    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
+#    Copyright (C) 2015 - 2022 EPFL                                          #
+#----------------------------------------------------------------------------#
+
+# --- Run from this directory
+cd ${0%/*} || exit 1
+
+#==============================================================================*
+# Run Simulation
+#==============================================================================*
+
+# --- Initialize the output file
+caseName=$(basename $(pwd))
+resFile=test.out
+rm -rf $resFile
+touch $resFile
+
+# --- Run the simulation
+echo -e "Run tutorial PSBT_Rod_Bundle_CHF $caseName ...\n" | tee -a $resFile
+./Allrun >> log.simulation
+echo -e "Done running tutorial PSBT_Rod_Bundle_CHF $caseName \n" | tee -a $resFile
+
+
+#==============================================================================*
+# Test Run until the end
+#==============================================================================*
+
+endString=$(tail -3 ./log.GeN-Foam | grep End)
+if [ "$endString" = "End" ]; then
+    echo -e "PSBT_Rod_Bundle_CHF $caseName has converged \n" | tee -a $resFile
+else
+    echo -e "PSBT_Rod_Bundle_CHF $caseName has NOT converged \n" | tee -a $resFile
+    exit 1
+fi
+
+
+#==============================================================================*
+# Test values against references
+#==============================================================================*
+
+# --- Recover the results
+maxAlphaVap=$(head -418 "./5/fluidRegion/alpha.vapour" | tail -1)
+refAlphaVap=0.123835
+TatMaxAlphaVap=$(head -418 "./5/fluidRegion/T.fixedPower" | tail -1)
+refT=620.178
+
+# --- Check that results are correct
+echo "alpha.vapour at the end of the channel" | tee -a $resFile
+if [ $maxAlphaVap = $refAlphaVap ] && [ $TatMaxAlphaVap = $refT ]; then
+    echo "Perfect match:" | tee -a $resFile
+    echo "|                       | Simulated | Expected |" | tee -a $resFile
+    echo "|:----------------------|:---------:|:--------:|" | tee -a $resFile
+    echo "| Max alpha vapour      | $maxAlphaVap | $refAlphaVap |" | tee -a $resFile
+    echo "| T at max alpha vapour | $TatMaxAlphaVap | $refT |" | tee -a $resFile
+else
+    echo "Divergent results:" | tee -a $resFile
+    echo "|                       | Simulated | Expected |" | tee -a $resFile
+    echo "|:----------------------|:---------:|:--------:|" | tee -a $resFile
+    echo "| Max      alpha vapour | $maxAlphaVap | $refAlphaVap |" | tee -a $resFile
+    echo "| T at max alpha vapour | $TatMaxAlphaVap | $refT |" | tee -a $resFile
+    exit 1
+fi
+
+
+# --- Exit successfully
+exit 0
+
+#==============================================================================*
