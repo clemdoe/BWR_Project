@@ -14,11 +14,7 @@ import matplotlib.pyplot as plt
 #N_vol: the number of volumes
 #H: the height of the fuel rod
 class FVM:
-    def __init__(self, ai, bi, ci, di, A00, A01, Am0, Am1, D0, Dm1, N_vol, H):
-        self.ai = ai
-        self.bi = bi
-        self.ci = ci
-        self.di = di
+    def __init__(self, A00, A01, Am0, Am1, D0, Dm1, N_vol, H):
         self.A00 = A00
         self.A01 = A01
         self.Am0 = Am0
