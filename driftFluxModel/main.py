@@ -30,6 +30,7 @@ D_h = 0.5 #hydraulic-equivalent diameter
 K_loss = 0.5 #loss coefficient
 g = 9.81 #gravity
 q__ = 0.5 #volumetric heat generation rate
+cladRadius = 1 #External radius of the clad
 
 #Calulated values
 DV = (H/N_vol)*l*L #Volume of the control volume
@@ -67,15 +68,6 @@ for i in range(N_iterations):
 
     #Filling inside of the resolution matrix for the velocity, pressure and enthalpy
     for i in range(mixtureVelocityClass.N_vol-1):
-        #Finding the density and temperature of the mixture
-        T = getTemperature(P[i], H[i])
-        rho_g_n, rho_l_n, rho_n = getDensity(U[i], H[i], P[i])
-
-        #Computing the areas for the velocity, pressure and enthalpy
-        A* = getAreas(A, Phi2Phi, f, D_h, K_loss, DV)
-        epsilon = getVoidFraction(rho_g_n, rho_l_n, U[i], H[i], P[i], U_old[i], rho_n, D_h, g)
-        V_gj = getDriftVelocity(rho_g_n, rho_l_n, g, D_h)
-
         mixtureVelocityClass.set_ADi(i, ci = ,
             ai = ,
             bi = ,
@@ -91,8 +83,16 @@ for i in range(N_iterations):
             bi = ,
             di =  )
 
-        rho_g_s, rho_l_s, rho_s = rho_g_n, rho_l_n, rho_n
-    
+        #Finding the density and temperature of the mixture
+        T = getTemperature(P[i], H[i])
+        rho_g[i], rho_l[i], rho[i] = getDensity(U[i], H[i], P[i])
+
+        #Computing the areas for the velocity, pressure and enthalpy
+        A_ = getAreas(A, Phi2Phi, f, D_h, K_loss, DV)
+        Vgj[i] = getDriftVelocity(rho_g[i], rho_l[i], g, D_h)
+        Vgj_prime[i] = Vgj + (C0 -1) * U_old[i]
+        epsilonMatrix[i] = getVoidFraction(rho_g[i], rho_l[i], U[i], H[i], P[i], U_old[i], rho[i], D_h, g)
+
     mixtureVelocityClass.verticalResolution()
     U = mixtureVelocityClass.h
     mixturePressureClass.verticalResolution()
@@ -165,3 +165,11 @@ def getVoidFraction(rho_g, rho_l, U, H, P, U_old, rho, D_h, g):
     Vgj_prime = Vgj + (C0 -1) * U_old
     epsilon = x_th / (C0 * (x_th + (rho_g/rho_l) * (1 - x_th)) + (rho_g * Vgj_prime / rho * U))
     return epsilon
+
+#Function to calculate the hydraulic diameter
+def getD_h():
+    if geoType == "square":
+        return (L*l*Phi)/(cladRadius*2*np.pi())
+    if geoType =="cylinder":
+        print('Cylinder geometry not implemented yet')
+        break
