@@ -1,3 +1,7 @@
+# This file contains the class FVM and the class plotting to solve a differential equation and plot the results
+# Used to calculate the drift velocity of the mixture in the fuel assembly
+# Authors : Clément Huet
+
 import numpy as np
 from iapws import IAPWS97
 import matplotlib.pyplot as plt
@@ -9,7 +13,7 @@ import matplotlib.pyplot as plt
 #A00, A01, Am0, Am1, D0, Dm1: the boundary conditions
 #N_vol: the number of volumes
 #H: the height of the fuel rod
-class MVF:
+class FVM:
     def __init__(self, ai, bi, ci, di, A00, A01, Am0, Am1, D0, Dm1, N_vol, H):
         self.ai = ai
         self.bi = bi
@@ -52,12 +56,12 @@ class MVF:
         self.T[0] = Tini # Tini est une liste de temperature initiale """
         
     #function to fill the matrix A and D
-    def AD_filling(self):
-        for i in range(1, self.N_vol-1):
-            self.set_ADi(i, ci = self.ci,
-            ai = self.ai,
-            bi = self.bi,
-            di = self.di )
+    # def AD_filling(self):
+    #     for i in range(1, self.N_vol-1):
+    #         self.set_ADi(i, ci = self.ci,
+    #         ai = self.ai,
+    #         bi = self.bi,
+    #         di = self.di )
     
     #function to set the boundary conditions
     def boundaryFilling(self):
@@ -84,7 +88,7 @@ class MVF:
     
 #class to plot the temperature distribution in the fuel rod in the radial or longitudinal direction with different possibilities
 #The parameters are:
-#convection: the object of the class MVFconvection
+#convection: the object of the class FVMconvection
 #conduction: the object of the class MDFconduction
 #type: the type of the plot (radial or longitudinal)
 #SlicePlace: the height of the slice in the fuel rod
