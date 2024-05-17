@@ -71,11 +71,9 @@ class FVM:
     
     #function to solve the differential equation of enthalppie
     def differential(self):
-        self.AD_filling()
         self.boundaryFilling()
         self.h = self.resoudre_h()
         return self.h
-    
     
     #function to calculate the temperature of the surface of the fuel using the fluid parameters, the distribution of enthalpie and the heat flux
     def verticalResolution(self):
