@@ -111,14 +111,12 @@ D_h = Area / np.sqrt(Area)
 Dz = Height/N_vol #Height of the control volume m
 U_start = inletFlowRate * Area / rho_l_start #m/s
 
-print(rho_g_start, rho_l_start)
-
 V_gj_start = getDriftVelocity(rho_g_start, rho_l_start, g, D_h) #m/s
 C0_start = getC0(rho_g_start, rho_l_start)
 #Vgj_prime_start = V_gj_start + (C0_start -1) * U_start #m/s
 Vgj_prime_start = V_gj_start + (C0_start -1) * U_start #m/s
 rho_start = rho_l_start * epsilon_start + rho_g_start * (1 - epsilon_start)
-Dhfg_start = 1000 #J/kg specific enthalpy of vaporization
+Dhfg_start = 500 #kJ/kg specific enthalpy of vaporization
 h_inlet = IAPWS97(T = T_inlet, P = P_inlet).h #J/kg
 
 #Initial fields of the system
@@ -138,8 +136,6 @@ Dhfg = np.ones(N_vol)*Dhfg_start
 C0 = np.ones(N_vol)*C0_start
 x_th = np.ones(N_vol)
 T = np.ones(N_vol)
-
-print(f'epsilon_old: {epsilon_old}, rho_g_old: {rho_g_old}, rho_l_old: {rho_l_old}, rho_old: {rho_old}, V_gj_old: {V_gj_old}, Vgj_prime: {Vgj_prime}, areaMatrix: {areaMatrix}, Dhfg: {Dhfg}, C0: {C0}, x_th: {x_th}, T: {T}')
 
 for j in range(N_iterations):
 
@@ -183,22 +179,27 @@ for j in range(N_iterations):
     #Solving the equation of energy concervation to find the enthalpy of the mixture
     i = -1
     Dm1 = q__ * DV - (epsilon_old[i]*rho_l_old[i]*rho_g_old[i]*Dhfg[i]*V_gj_old[i]/rho_old[i]) + (epsilon_old[i-1]*rho_l_old[i-1]*rho_g_old[i-1]*Dhfg[i-1]*V_gj_old[i-1]/rho_old[i-1]) + (1/2) * (P[i]*areaMatrix[i] - P[i-1]*areaMatrix[i-1]) * ( (U[i] + epsilon_old[i]*(rho_l_old[i]-rho_g_old[i])*V_gj_old[i]/rho_old[i]) + (U[i-1] + epsilon_old[i-1]*(rho_l_old[i-1]-rho_g_old[i-1])*V_gj_old[i-1]/rho_old[i-1]) )
-    print(f'Dm1: {Dm1}')
+    #print(f'Dm1: {Dm1}, epsilon_old[i]: {epsilon_old[i]}, rho_l_old[i]: {rho_l_old[i]}, rho_g_old[i]: {rho_g_old[i]}, Dhfg[i]: {Dhfg[i]}, V_gj_old[i]: {V_gj_old[i]}, rho_old[i]: {rho_old[i]}, P[i]: {P[i]}, areaMatrix[i]: {areaMatrix[i]}, U[i]: {U[i]}, U[i-1]: {U[i-1]}')
     mixtureEnthalpyClass = FVM(A00 = 1, A01 = 0, Am0 = rho_old[-2] * U[-2] * areaMatrix_old_[-2], Am1 = rho_old[-1] * U[-1] * areaMatrix_old_[-1], D0 = h_inlet, Dm1 = Dm1, N_vol = 10, H = 1)
     #Filling inside of the resolution matrix for the enthalpy,
     #the mixture enthalpy needs to be solve after de U field because in contain U* and U
+    print(f'epsilon_old: {epsilon_old},\n rho_g_old: {rho_g_old}, \n rho_l_old: {rho_l_old},\n  rho_old: {rho_old},\n V_gj_old: {V_gj_old}, \n Vgj_prime: {Vgj_prime},\n areaMatrix: {areaMatrix},\n Dhfg: {Dhfg},\n C0: {C0}, \n x_th: {x_th},\n T: {T}, P: {P}, U: {U}, H: {H}    ')
+
     for i in range(1, mixtureEnthalpyClass.N_vol-1):
 
-        di = q__ * DV - (epsilon_old[i]*rho_l_old[i]*rho_g_old[i]*Dhfg[i]*V_gj_old[i]/rho_old[i]) + (epsilon_old[i-1]*rho_l_old[i-1]*rho_g_old[i-1]*Dhfg[i-1]*V_gj_old[i-1]/rho_old[i-1]) + (1/2) * (P[i]*areaMatrix[i] - P[i-1]*areaMatrix[i-1]) * ( (U[i] + epsilon_old[i]*(rho_l_old[i]-rho_g_old[i])*V_gj_old[i]/rho_old[i]) + (U[i-1] + epsilon_old[i-1]*(rho_l_old[i-1]-rho_g_old[i-1])*V_gj_old[i-1]/rho_old[i-1]) )
-
+        #DI = q__ * DV - (epsilon_old[i]*rho_l_old[i]*rho_g_old[i]*Dhfg[i]*V_gj_old[i]/rho_old[i]) + (epsilon_old[i-1]*rho_l_old[i-1]*rho_g_old[i-1]*Dhfg[i-1]*V_gj_old[i-1]/rho_old[i-1]) + (1/2) * (P[i]*areaMatrix[i] - P[i-1]*areaMatrix[i-1]) * ( (U[i] + epsilon_old[i]*(rho_l_old[i]-rho_g_old[i])*V_gj_old[i]/rho_old[i]) + (U[i-1] + epsilon_old[i-1]*(rho_l_old[i-1]-rho_g_old[i-1])*V_gj_old[i-1]/rho_old[i-1]) )
+        DI = (P[i]*areaMatrix[i] - P[i-1]*areaMatrix[i-1]) #* ( (U[i] + epsilon_old[i]*(rho_l_old[i]-rho_g_old[i])*V_gj_old[i]/rho_old[i]) + (U[i-1] + epsilon_old[i-1]*(rho_l_old[i-1]-rho_g_old[i-1])*V_gj_old[i-1]/rho_old[i-1]) )
+    
+        print(f'di: {DI},  P[i]: {P[i]},  P[i-1]: {P[i-1]}, areaMatrix[i]: {areaMatrix[i]},  areaMatrix[i-1]: {areaMatrix[i-1]}, U[i]: {U[i]}, U[i-1]: {U[i-1]}')
+        #print( f'di: {di}, epsilon_old[i]: {epsilon_old[i]}, rho_l_old[i]: {rho_l_old[i]}, rho_g_old[i]: {rho_g_old[i]}, Dhfg[i]: {Dhfg[i]}, V_gj_old[i]: {V_gj_old[i]}, rho_old[i]: {rho_old[i]}, epsilon_old[i-1]: {epsilon_old[i-1]}, rho_l_old[i-1]: {rho_l_old[i-1]}, rho_g_old[i-1]: {rho_g_old[i-1]}, Dhfg[i-1]: {Dhfg[i-1]}, V_gj_old[i-1]: {V_gj_old[i-1]}, rho_old[i-1]: {rho_old[i-1]}, P[i]: {P[i]}, P[i-1]: {P[i-1]}, areaMatrix[i]: {areaMatrix[i]},  areaMatrix[i-1]: {areaMatrix[i-1]}, U[i]: {U[i]}, U[i-1]: {U[i-1]}')
         mixtureEnthalpyClass.set_ADi(i, ci = - rho_old[i-1] * U[i-1] * areaMatrix_old_[i-1],
             ai = rho_old[i] * U[i] * areaMatrix_old_[i],
             bi = 0,
-            di =  di)
+            di =  DI)
         
     mixtureEnthalpyClass.verticalResolution()
     print(f'mixtureEnthalpyClass.A: {mixtureEnthalpyClass.A}, mixtureEnthalpyClass.D: {mixtureEnthalpyClass.D}')
-    H = mixtureEnthalpyClass.h
+    H = [mixtureEnthalpyClass.h[i]*rho_old[i]*0.001 for i in range(N_vol)]
     #print(f'U : {mixtureVelocityClass.A}, P: {mixturePressureClass.A}, H: {mixtureEnthalpyClass.A}')
     print(f'U: {U}, P: {P}, H: {H}')
     for i in range(mixturePressureClass.N_vol):

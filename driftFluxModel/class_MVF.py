@@ -29,12 +29,14 @@ class FVM:
 
     #function to set the matrix A and D
     def set_ADi(self, i, ci, ai, bi, di):
+        print("setting A and D")
         self.A[i, i-1:i+2] = [ci, ai, bi]
         self.D[i] = di
         return
     
     #function to set the boundary conditions
     def set_CL(self, A0, Am1, D0, Dm1):
+        print("setting CL")
         self.A[0], self.A[-1] = A0, Am1
         self.D[0], self.D[-1] = D0, Dm1
         return
@@ -61,6 +63,7 @@ class FVM:
     #function to set the boundary conditions
     def boundaryFilling(self):
         # conditions aux limites
+        print("filling boundary")
         A0, Am1 = np.zeros(self.N_vol), np.zeros(self.N_vol)
         A0[:2] = [self.A00, self.A01]
         Am1[-2:] = [self.Am0, self.Am1]
