@@ -27,7 +27,6 @@ class FVM:
         self.z = np.linspace(0, H, self.N_vol)
         self.A, self.D = np.eye(self.N_vol), np.zeros(self.N_vol)
 
-
     #function to set the matrix A and D
     def set_ADi(self, i, ci, ai, bi, di):
         self.A[i, i-1:i+2] = [ci, ai, bi]

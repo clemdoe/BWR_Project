@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 ##Creation of function
 #FUnction to calculate the temperature of the mixture
 def getTemperature(P, H):
-    print(f'P : {P}, H: {H}')
     T = IAPWS97(P = P, h = H).T
     return T
 
@@ -140,56 +139,70 @@ C0 = np.ones(N_vol)*C0_start
 x_th = np.ones(N_vol)
 T = np.ones(N_vol)
 
+print(f'epsilon_old: {epsilon_old}, rho_g_old: {rho_g_old}, rho_l_old: {rho_l_old}, rho_old: {rho_old}, V_gj_old: {V_gj_old}, Vgj_prime: {Vgj_prime}, areaMatrix: {areaMatrix}, Dhfg: {Dhfg}, C0: {C0}, x_th: {x_th}, T: {T}')
 
-for i in range(N_iterations):
+for j in range(N_iterations):
+
+    print(f"Itération number: {j}")
 
     U_old = U
     P_old = P
     H_old = H
+
+    #Dm1 = ( q__ * DV - (epsilon_old[-1]*rho_l_old[-1]*rho_g_old[-1]*Dhfg[-1]*V_gj_old[-1]/rho_old[-1]) + (epsilon_old[-2]*rho_l_old[-2]*rho_g_old[-2]*Dhfg[-2]*V_gj_old[-2]/rho_old[-2]) + (1/2) * (P_old[-1]*areaMatrix[-1] - P_old[-2]*areaMatrix[-2]) * ( (U_old[-1] + epsilon_old[-1]*(rho_l_old[-1]-rho_g_old[-1])*V_gj_old[-1]/rho_old[-1]) + (U_old[-2] + epsilon_old[-2]*(rho_l_old[-2]-rho_g_old[-2])*V_gj_old[-2]/rho_old[-2])) )
 
     #Solving the system of equations of the mixture model
     #Solving the equation of mass concervation to find the velocity of the mixture
     mixtureVelocityClass = FVM(A00 = 1, A01 = 0, Am0 = - rho_old[0], Am1 = rho_old[1], D0 = U_start, Dm1 = 0, N_vol = 10, H = Height)
     #Solving the equation of momentum concervation to find the pressure of the mixture
     mixturePressureClass = FVM(A00 = - areaMatrix[0], A01 = areaMatrix[1], Am0 = 0, Am1 = 1, D0 = (((epsilon_old[1]/(1-epsilon_old[1]))* rho_l_old[1]*rho_g_old[1]*(V_gj_old[1]**2)*areaMatrix[1])/rho_old[1]) - (((epsilon_old[0]/(1-epsilon_old[0]))* rho_l_old[0]*rho_g_old[0]*(V_gj_old[0]**2)*areaMatrix[0])/rho_old[0]) - ((rho_old[1]- rho_old[0])* g * DV / 2) - (rho_g_old[1] * U_old[1] * areaMatrix_old_[1]) - (rho_g_old[0] * U_old[0] * areaMatrix_old_[0]), Dm1 = P_outlet, N_vol = 10, H = Height)
-    #Solving the equation of energy concervation to find the enthalpy of the mixture
-    mixtureEnthalpyClass = FVM(A00 = 1, A01 = 0, Am0 = rho_old[-2] * U_old[-2] * areaMatrix_old_[-2], Am1 = rho_old[-1] * U_old[-1] * areaMatrix_old_[-1], D0 = h_inlet, Dm1 = 100 * ( q__ * DV - (epsilon_old[-1]*rho_l_old[-1]*rho_g_old[-1]*Dhfg[-1]*V_gj_old[-1]/rho_old[-1]) + (epsilon_old[-2]*rho_l_old[-2]*rho_g_old[-2]*Dhfg[-2]*V_gj_old[-2]/rho_old[-2]) + (1/2) * (P_old[-1]*areaMatrix[-1] - P_old[-2]*areaMatrix[-2]) * ( (U_old[-1] + epsilon_old[-1]*(rho_l_old[-1]-rho_g_old[-1])*V_gj_old[-1]/rho_old[-1]) + (U_old[-2] + epsilon_old[-2]*(rho_l_old[-2]-rho_g_old[-2])*V_gj_old[-2]/rho_old[-2])) ), N_vol = 10, H = 1)
-
+    
     #Filling inside of the resolution matrix for the velocity, pressure and enthalpy
     for i in range(1, mixtureVelocityClass.N_vol-1):
         mixtureVelocityClass.set_ADi(i, ci = - rho_old[i-1],
             ai = rho_old[i],
             bi = 0,
             di =  0)
+        
+    #Solving the system of equations for the velocity
+    mixtureVelocityClass.verticalResolution()
+    #print(f'mixtureVelocityClass.A: {mixtureVelocityClass.A}, mixtureVelocityClass.D: {mixtureVelocityClass.D}')
+    U = mixtureVelocityClass.h
 
+    for i in range(1, mixturePressureClass.N_vol-1):
         mixturePressureClass.set_ADi(i, ci = 0,
             ai = - areaMatrix[i-1],
             bi = areaMatrix[i],
-            di =  (((epsilon_old[i]/(1-epsilon_old[i]))* rho_l_old[i]*rho_g_old[i]*(V_gj_old[i]**2)*areaMatrix[i])/rho_old[i]) - (((epsilon_old[i-1]/(1-epsilon_old[i-1]))* rho_l_old[i-1]*rho_g_old[i-1]*(V_gj_old[i-1]**2)*areaMatrix[i-1])/rho_old[i-1]) - ((rho_old[i]- rho_old[i-1])* g * DV / 2) - (rho_g_old[i] * U_old[i] * areaMatrix_old_[i]) - (rho_g_old[i-1] * U_old[i-1] * areaMatrix_old_[i-1]))
+            di =  (((epsilon_old[i]/(1-epsilon_old[i]))* rho_l_old[i]*rho_g_old[i]*(V_gj_old[i]**2)*areaMatrix[i])/rho_old[i]) - (((epsilon_old[i-1]/(1-epsilon_old[i-1]))* rho_l_old[i-1]*rho_g_old[i-1]*(V_gj_old[i-1]**2)*areaMatrix[i-1])/rho_old[i-1]) - ((rho_old[i]- rho_old[i-1])* g * DV / 2) - (rho_g_old[i] * U_old[i] * areaMatrix_old_[i] * U[i]) - (rho_g_old[i-1] * U_old[i-1] * areaMatrix_old_[i-1] * U[i-1] ))
         
-
-    #Solving the system of equations for the velocity and pressure
-    mixtureVelocityClass.verticalResolution()
-    U = mixtureVelocityClass.h
+    #Solving the system of equations for the pressure
     mixturePressureClass.verticalResolution()
+    #print(f'mixturePressureClass.A: {mixturePressureClass.A}, mixturePressureClass.D: {mixturePressureClass.D}')
     P = mixturePressureClass.h
 
+    #Solving the equation of energy concervation to find the enthalpy of the mixture
+    i = -1
+    Dm1 = q__ * DV - (epsilon_old[i]*rho_l_old[i]*rho_g_old[i]*Dhfg[i]*V_gj_old[i]/rho_old[i]) + (epsilon_old[i-1]*rho_l_old[i-1]*rho_g_old[i-1]*Dhfg[i-1]*V_gj_old[i-1]/rho_old[i-1]) + (1/2) * (P[i]*areaMatrix[i] - P[i-1]*areaMatrix[i-1]) * ( (U[i] + epsilon_old[i]*(rho_l_old[i]-rho_g_old[i])*V_gj_old[i]/rho_old[i]) + (U[i-1] + epsilon_old[i-1]*(rho_l_old[i-1]-rho_g_old[i-1])*V_gj_old[i-1]/rho_old[i-1]) )
+    print(f'Dm1: {Dm1}')
+    mixtureEnthalpyClass = FVM(A00 = 1, A01 = 0, Am0 = rho_old[-2] * U[-2] * areaMatrix_old_[-2], Am1 = rho_old[-1] * U[-1] * areaMatrix_old_[-1], D0 = h_inlet, Dm1 = Dm1, N_vol = 10, H = 1)
     #Filling inside of the resolution matrix for the enthalpy,
     #the mixture enthalpy needs to be solve after de U field because in contain U* and U
     for i in range(1, mixtureEnthalpyClass.N_vol-1):
 
-        di = q__ * DV - (epsilon_old[i]*rho_l_old[i]*rho_g_old[i]*Dhfg[i]*V_gj_old[i]/rho_old[i]) + (epsilon_old[i-1]*rho_l_old[i-1]*rho_g_old[i-1]*Dhfg[i-1]*V_gj_old[i-1]/rho_old[i-1]) + (1/2) * (P_old[i]*areaMatrix[i] - P_old[i-1]*areaMatrix[i-1]) * ( (U_old[i] + epsilon_old[i]*(rho_l_old[i]-rho_g_old[i])*V_gj_old[i]/rho_old[i]) + (U_old[i-1] + epsilon_old[i-1]*(rho_l_old[i-1]-rho_g_old[i-1])*V_gj_old[i-1]/rho_old[i-1]) )
+        di = q__ * DV - (epsilon_old[i]*rho_l_old[i]*rho_g_old[i]*Dhfg[i]*V_gj_old[i]/rho_old[i]) + (epsilon_old[i-1]*rho_l_old[i-1]*rho_g_old[i-1]*Dhfg[i-1]*V_gj_old[i-1]/rho_old[i-1]) + (1/2) * (P[i]*areaMatrix[i] - P[i-1]*areaMatrix[i-1]) * ( (U[i] + epsilon_old[i]*(rho_l_old[i]-rho_g_old[i])*V_gj_old[i]/rho_old[i]) + (U[i-1] + epsilon_old[i-1]*(rho_l_old[i-1]-rho_g_old[i-1])*V_gj_old[i-1]/rho_old[i-1]) )
 
-        mixtureEnthalpyClass.set_ADi(i, ci = - rho_old[i-1] * U_old[i-1] * areaMatrix_old_[i-1],
-            ai = rho_old[i] * U_old[i] * areaMatrix_old_[i],
+        mixtureEnthalpyClass.set_ADi(i, ci = - rho_old[i-1] * U[i-1] * areaMatrix_old_[i-1],
+            ai = rho_old[i] * U[i] * areaMatrix_old_[i],
             bi = 0,
             di =  di)
+        
     mixtureEnthalpyClass.verticalResolution()
+    print(f'mixtureEnthalpyClass.A: {mixtureEnthalpyClass.A}, mixtureEnthalpyClass.D: {mixtureEnthalpyClass.D}')
     H = mixtureEnthalpyClass.h
     #print(f'U : {mixtureVelocityClass.A}, P: {mixturePressureClass.A}, H: {mixtureEnthalpyClass.A}')
     print(f'U: {U}, P: {P}, H: {H}')
     for i in range(mixturePressureClass.N_vol):
-        print(i)
+        print(f'Mise à jour des variables constitutives. i = {i}')
         rho_g_old[i], rho_l_old[i], rho_old[i] = getDensity(epsilon_old[i], H[i], P[i])
         V_gj_old[i] = getDriftVelocity(rho_g_old[i], rho_l_old[i], g, D_h)
         C0[i] = getC0(rho_g_old[i], rho_l_old[i])
@@ -200,14 +213,14 @@ for i in range(N_iterations):
 
 
     if np.linalg.norm(U - U_old) < eps or np.linalg.norm(P - P_old) < eps or np.linalg.norm(H - H_old) < eps:
-        print(f"Itération number: {i}, U_residual: {U_residual}, P_residual: {P_residual}, H_residual: {H_residual}")
+        print(f"Itération number: {j}, U_residual: {U_residual}, P_residual: {P_residual}, H_residual: {H_residual}")
         break
 
-    elif i == N_iterations - 1:
+    elif j == N_iterations - 1:
         raise ValueError("The system did not converge")
     
     else:
         U_residual = np.linalg.norm(U - U_old)
         P_residual = np.linalg.norm(P - P_old)
         H_residual = np.linalg.norm(H - H_old)
-        print(f"Itération number: {i}, U_residual: {U_residual}, P_residual: {P_residual}, H_residual: {H_residual}")
+        print(f"Itération number: {j}, U_residual: {U_residual}, P_residual: {P_residual}, H_residual: {H_residual}")
