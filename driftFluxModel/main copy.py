@@ -191,6 +191,9 @@ for j in range(N_iterations):
             ai = areaMatrix[i],
             bi = 0,
             di =  (((epsilon_old[i]/(1-epsilon_old[i]))* rho_l_old[i]*rho_g_old[i]*(V_gj_old[i]**2)*areaMatrix[i])/rho_old[i]) - (((epsilon_old[i-1]/(1-epsilon_old[i-1]))* rho_l_old[i-1]*rho_g_old[i-1]*(V_gj_old[i-1]**2)*areaMatrix[i-1])/rho_old[i-1]) - ((rho_old[i]- rho_old[i-1])* g * DV / 2) - (rho_g_old[i] * U_old[i] * areaMatrix_old_[i] * U[i]) - (rho_g_old[i-1] * U_old[i-1] * areaMatrix_old_[i-1] * U[i-1] ))
+        
+            VAR_VFM_Class.fillingOutsideBoundary(i, i-sizeMesh,
+            ai = )
         elif i > sizeMesh and i < 2*sizeMesh:
             VAR_VFM_Class.set_ADi(i, ci = 0,
             ai = - areaMatrix[i-1],

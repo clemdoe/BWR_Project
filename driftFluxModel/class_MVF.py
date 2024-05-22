@@ -41,11 +41,6 @@ class FVM:
         self.D[0], self.D[-1] = D0, Dm1
         return
     
-    def setInternalBoundary(self, i, ci, ai, bi, di):
-        self.A[i, i-1:i+1] = [ci, ai, bi]
-        self.D[i] = di
-        return 
-    
     #function to solve the system of equations
     def resoudre_h(self):
         return np.linalg.solve(self.A, self.D) 
@@ -75,6 +70,14 @@ class FVM:
         D0 = self.D0
         Dm1 = self.Dm1
         self.set_CL(A0, Am1, D0, Dm1)
+
+    def fillingOutside(self, i, j, ci, ai, bi, di):
+        self.A[i, j-1:j+1] = [ci, ai, bi]
+        return 
+    
+    def fillingOutsideBoundary(self, i, j, ai, bi, di):
+        self.A[i, j:j+1] = [ai, bi]
+        return 
     
     #function to solve the differential equation of enthalppie
     def differential(self):
