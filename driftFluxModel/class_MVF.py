@@ -41,6 +41,11 @@ class FVM:
         self.D[0], self.D[-1] = D0, Dm1
         return
     
+    def setInternalBoundary(self, i, ci, ai, bi, di):
+        self.A[i, i-1:i+1] = [ci, ai, bi]
+        self.D[i] = di
+        return 
+    
     #function to solve the system of equations
     def resoudre_h(self):
         return np.linalg.solve(self.A, self.D) 
