@@ -29,14 +29,12 @@ class FVM:
 
     #function to set the matrix A and D
     def set_ADi(self, i, ci, ai, bi, di):
-        print("setting A and D")
         self.A[i, i-1:i+2] = [ci, ai, bi]
         self.D[i] = di
         return
     
     #function to set the boundary conditions
     def set_CL(self, A0, Am1, D0, Dm1):
-        print("setting CL")
         self.A[0], self.A[-1] = A0, Am1
         self.D[0], self.D[-1] = D0, Dm1
         return
@@ -62,8 +60,6 @@ class FVM:
     
     #function to set the boundary conditions
     def boundaryFilling(self):
-        # conditions aux limites
-        print("filling boundary")
         A0, Am1 = np.zeros(self.N_vol), np.zeros(self.N_vol)
         A0[:2] = [self.A00, self.A01]
         Am1[-2:] = [self.Am0, self.Am1]
@@ -71,12 +67,12 @@ class FVM:
         Dm1 = self.Dm1
         self.set_CL(A0, Am1, D0, Dm1)
 
-    def fillingOutside(self, i, j, ci, ai, bi, di):
-        self.A[i, j-1:j+1] = [ci, ai, bi]
+    def fillingOutside(self, i, j, ci, ai, bi):
+        self.A[i, j-1:j+2] = [ci, ai, bi]
         return 
     
-    def fillingOutsideBoundary(self, i, j, ai, bi, di):
-        self.A[i, j:j+1] = [ai, bi]
+    def fillingOutsideBoundary(self, i, j, ai, bi):
+        self.A[i, j:j+2] = [ai, bi]
         return 
     
     #function to solve the differential equation of enthalppie
