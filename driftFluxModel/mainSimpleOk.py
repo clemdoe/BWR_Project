@@ -86,8 +86,8 @@ def splitVar(var):
 
 ## Parameters of the system
 # Equation resolution parameters
-eps = 10**(-6)
-N_iterations = 100
+eps = 10**(-3)
+N_iterations = 1000
 
 # Constant of the problem
 sizeMesh = 4 #Number of volumes for the discretization using the FVM class
@@ -102,6 +102,9 @@ K_loss = 0 #loss coefficient ???????
 g = 9.81 #gravity m/s2
 q__ = 300000 #volumetric heat generation rate W/m3
 cladRadius = 6.52*10**(-3) #External radius of the clad m
+waterGap = 0.5*10**(-3) #Gap between the clad and the water m
+waterRadius =  cladRadius + waterGap #External radius of the water m
+massFlowRate = 7000 #kg/m2/s
 
 #Initial/boundary conditions of the system
 rho_l_start= 1000 #kg/m3
@@ -115,8 +118,9 @@ h_start = IAPWS97(T = T_inlet, P = P_inlet).h #J/kg
 
 #Calulated values
 DV = (Height/N_vol)*((l*L)-(np.pi*cladRadius**2)) #Volume of the control volume m3
-#Area = ((l*L)-(np.pi*cladRadius**2)) #Area of the control volume m2
-Area = 2
+Area = ((np.pi*waterRadius**2)-(np.pi*cladRadius**2)) #Area of the control volume m2
+U_start = massFlowRate / (rho_l_start) #m/s
+#Area = 2
 D_h = getD_h(L,l,"square",cladRadius,Phi) #Hydraulic diameter m2
 Dz = Height/N_vol #Height of the control volume m
 
@@ -145,7 +149,7 @@ Dhfg_start = 500 #kJ/kg specific enthalpy of vaporization
 h_inlet = IAPWS97(T = T_inlet, P = P_inlet).h #J/kg
 
 #Initial fields of the system
-U = np.ones(sizeMesh)*U_start
+U = np.ones(sizeMesh)
 P = np.ones(sizeMesh)
 H = np.ones(sizeMesh)
 rho_g_old = np.ones(N_vol)*rho_g_start
@@ -162,8 +166,11 @@ C0 = np.ones(N_vol)*C0_start
 x_th = np.ones(N_vol)
 T = np.ones(N_vol)
 
+print(f'rho_old: {rho_old}, Area : {Area})')
+
 for j in range(N_iterations):
 
+    print(f"\n Begin itération number: {j}")
     U_old = U
     P_old = P
     H_old = H
@@ -199,7 +206,7 @@ for j in range(N_iterations):
             di =  ((rho_old[i+1]- rho_old[i])* g * DV / 2))
         
             VAR_VFM_Class.fillingOutsideBoundary(i, i-sizeMesh,
-            ai = rho_old[i]*VAR_old[i-sizeMesh]*areaMatrix_old_[i],
+            ai = - rho_old[i]*VAR_old[i-sizeMesh]*areaMatrix_old_[i],
             bi = rho_old[i+1]*VAR_old[i-sizeMesh]*areaMatrix_old_[i+1])
 
         elif i > sizeMesh and i < 2*sizeMesh-1:
@@ -211,7 +218,7 @@ for j in range(N_iterations):
         
             print(f'rho_old[i]: {rho_old[i]}, VAR_old[i-sizeMesh]: {VAR_old[i-sizeMesh]}, areaMatrix_old_[i]: {areaMatrix_old_[i]}, rho_old[i+1]: {rho_old[i+1]}, VAR_old[i+1-sizeMesh]: {VAR_old[i+1-sizeMesh]}, areaMatrix_old_[i+1]: {areaMatrix_old_[i+1]}')
             VAR_VFM_Class.fillingOutsideBoundary(i, i-sizeMesh,
-            ai = rho_old[i]*VAR_old[i-sizeMesh]*areaMatrix_old_[i],
+            ai = - rho_old[i]*VAR_old[i-sizeMesh]*areaMatrix_old_[i],
             bi = rho_old[i+1]*VAR_old[i+1-sizeMesh]*areaMatrix_old_[i+1])
 
         elif i == 2*sizeMesh -1:
@@ -240,7 +247,7 @@ for j in range(N_iterations):
             bi = 0,
             di =  DI)
 
-    print(VAR_VFM_Class.A, VAR_VFM_Class.D)
+    print(j, VAR_VFM_Class.A, VAR_VFM_Class.D)
     VAR = VAR_VFM_Class.resoudre_h()
     U, P, H = splitVar(VAR)
 
@@ -256,19 +263,18 @@ for j in range(N_iterations):
     if (np.linalg.norm(U - U_old) < eps) and (np.linalg.norm(P - P_old) < eps) and (np.linalg.norm(H - H_old) < eps):
         print(f"Itération number: {j}, U_residual: {U_residual}, P_residual: {P_residual}, H_residual: {H_residual}")
         print(f"Convergence reached at iteration {j}")
-        print(VAR_VFM_Class.A, VAR_VFM_Class.D)
         print(f'U: {U}, P: {P}, H: {H}')
         break
 
     elif j == N_iterations - 1:
+        print(f'rho_old: {rho_old}, Area : {Area})')
         raise ValueError("The system did not converge")
         
     else:
         print(f"Itération number: {j}, U_residual: {U_residual}, P_residual: {P_residual}, H_residual: {H_residual}")
         print(f"Convergence not reached yet at iteration {j}")
 
-
-# Assuming you have the arrays U, P, and H
+""" # Assuming you have the arrays U, P, and H
 # Define the file path
 csv_file = 'output.csv'
 
@@ -280,3 +286,6 @@ with open(csv_file, 'w', newline='') as file:
     writer = csv.writer(file)
     writer.writerow(['U', 'P', 'H'])  # Write the header
     writer.writerows(data)  # Write the data rows
+ """
+
+print(f'rho_old: {rho_old}, Area : {Area})')
