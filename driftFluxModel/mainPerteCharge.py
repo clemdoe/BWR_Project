@@ -28,7 +28,7 @@ def getDensity(epsilon, H, P):
 
 #Function to calculate the areas of the mixture
 def getAreas(A, Phi2Phi, f, D_h, K_loss, DV, Dz):
-    A_chap = A #+  (Phi2Phi/2) * ((f / D_h) + (K_loss / Dz)) * DV
+    A_chap = A +  (Phi2Phi/2) * ((f / D_h) + (K_loss / Dz)) * DV
     return A_chap
 
 #Function to calculate the thermodynamic quality of the mixture
@@ -130,9 +130,10 @@ Phi = 1 #Porosity
 Height = 2 #Height of the fuel rod m
 l = 14.04*10**(-3) #Side of the square fuel rod m
 L = 14.04*10**(-3) #Side of the square fuel rod m
-Phi2Phi = 0.5 #Two-phase friction multiplier ???????,
-f = 0.5 #correction factor for drag coefficient ???????
-K_loss = 0 #loss coefficient ???????
+Phi2Phi = 0.5 #Two-phase friction multiplier ???????
+Phi_start = 50 #Lockart Martinelli parameter
+f = 0.005 #correction factor for drag coefficient Lockart Martinelli
+K_loss = 0 #loss coefficient 
 g = 9.81 #gravity m/s2
 q__ = 0 #volumetric heat generation rate W/m3
 cladRadius = 6.52*10**(-3) #External radius of the clad m
@@ -194,8 +195,10 @@ V_gj_old = np.ones(sizeMesh)*V_gj_start
 Vgj_prime = np.ones(sizeMesh)*Vgj_prime_start
 epsilon_old = np.ones(sizeMesh)*epsilon_start
 areaMatrix = np.ones(sizeMesh)*Area
-areaMatrix_old_ = [getAreas(areaMatrix[i], Phi2Phi, f, D_h, K_loss, DV, Dz) for i in range(sizeMesh)]
 Dhfg = np.ones(sizeMesh)*Dhfg_start
+Phi = np.ones(sizeMesh)*Phi_start
+Friction = np.ones(sizeMesh)*f
+areaMatrix_old_ = [getAreas(areaMatrix[i], Phi[i], Friction[i], D_h, K_loss, DV, Dz) for i in range(sizeMesh)]
 
 C0 = np.ones(sizeMesh)*C0_start
 x_th = np.ones(sizeMesh)
@@ -211,22 +214,12 @@ for j in range(N_iterations):
 
     VAR_old = createVar(U_old,P_old,H_old)
     rho_old = createVar(rho_old, rho_old, rho_old)
-    rho_g_old = createVar(rho_g_old, rho_g_old, rho_g_old)
-    rho_l_old = createVar(rho_l_old, rho_l_old, rho_l_old)
-    V_gj_old = createVar(V_gj_old, V_gj_old, V_gj_old)
-    Vgj_prime = createVar(Vgj_prime, Vgj_prime, Vgj_prime)
-    epsilon_old = createVar(epsilon_old, epsilon_old, epsilon_old)
-    areaMatrix = createVar(areaMatrix, areaMatrix, areaMatrix)
     areaMatrix_old_ = createVar(areaMatrix_old_, areaMatrix_old_, areaMatrix_old_)
-    Dhfg = createVar(Dhfg, Dhfg, Dhfg)
-    C0 = createVar(C0, C0, C0)
-    x_th = createVar(x_th, x_th, x_th)
-    T = createVar(T, T, T)
+    areaMatrix = createVar(areaMatrix, areaMatrix, areaMatrix)
+    print(f'AreaMatrix: {areaMatrix}', f'AreaMatrix_old_: {areaMatrix_old_}')
 
-    i = -1
-    DI = (1/2) * (VAR_old[i-sizeMesh]*areaMatrix[i] - VAR_old[i-1]*areaMatrix[i-1]) * ((VAR_old[i-2*sizeMesh]+ ((epsilon_old[i] * (rho_l_old[i] - rho_g_old[i]) * V_gj_old[i])/ rho_old[i]))+ (VAR_old[i-1-2*sizeMesh]+ ((epsilon_old[i-1] * (rho_l_old[i-1] - rho_g_old[i-1]) * V_gj_old[i-1])/ rho_old[i-1]) ) )
-    DM1 = q__ * DV + DI
-    VAR_VFM_Class = FVM(A00 = 1, A01 = 0, Am0 = - rho_old[-2] * VAR_old[sizeMesh-2] * areaMatrix_old_[-2], Am1 = rho_old[-1] * VAR_old[sizeMesh-1] * areaMatrix_old_[-1], D0 = U_start, Dm1 = DM1, N_vol = N_vol, H = Height)
+    DM1 = (1/2) * (P[-1]*areaMatrix[-1] - P[-2]*areaMatrix[-2]) * ( (U_old[-1]) + (U_old[-2]) )
+    VAR_VFM_Class = FVM(A00 = 1, A01 = 0, Am0 = - rho_old[-2] * VAR_old[sizeMesh-2] * areaMatrix[-2], Am1 = rho_old[-1] * VAR_old[sizeMesh-1] * areaMatrix[-1], D0 = U_start, Dm1 = DM1, N_vol = 12, H = Height)
     VAR_VFM_Class.boundaryFilling()
     for i in range(1, VAR_VFM_Class.N_vol-1):
         #Inside the velocity submatrix
@@ -244,23 +237,23 @@ for j in range(N_iterations):
 
         #Inside the pressure submatrix
         elif i == sizeMesh:
-            DI = -((epsilon_old[i+1] * rho_g_old[i+1] * rho_l_old[i+1] * V_gj_old[i+1]**2 + areaMatrix[i+1] )/ ((1 - epsilon_old[i+1])*rho_old[i+1]) )  + ((epsilon_old[i] * rho_g_old[i] * rho_l_old[i] * V_gj_old[i]**2 + areaMatrix[i] )/ ((1 - epsilon_old[i])*rho_old[i]) )     
+            #DI = -((epsilon_old[i+1] * rho_g_old[i+1] * rho_l_old[i+1] * V_gj_old[i+1]**2 + areaMatrix[i+1] )/ ((1 - epsilon_old[i+1])*rho_old[i+1]) )  + ((epsilon_old[i] * rho_g_old[i] * rho_l_old[i] * V_gj_old[i]**2 + areaMatrix[i] )/ ((1 - epsilon_old[i])*rho_old[i]) )     
             VAR_VFM_Class.set_ADi(sizeMesh, 
             ci = 0,
             ai = - areaMatrix[i],
             bi = areaMatrix[i+1],
-            di = - ((rho_old[i+1]- rho_old[i])* g * DV / 2) + DI)
+            di = - ((rho_old[i+1]- rho_old[i])* g * DV / 2))
         
             VAR_VFM_Class.fillingOutsideBoundary(i, i-sizeMesh,
             ai = - rho_old[i]*VAR_old[i-sizeMesh]*areaMatrix_old_[i],
             bi = rho_old[i+1]*VAR_old[i-sizeMesh]*areaMatrix_old_[i+1])
 
         elif i > sizeMesh and i < 2*sizeMesh-1:
-            DI = -((epsilon_old[i+1] * rho_g_old[i+1] * rho_l_old[i+1] * V_gj_old[i+1]**2 + areaMatrix[i+1] )/ ((1 - epsilon_old[i+1])*rho_old[i+1]) )  + ((epsilon_old[i] * rho_g_old[i] * rho_l_old[i] * V_gj_old[i]**2 + areaMatrix[i] )/ ((1 - epsilon_old[i])*rho_old[i]) )     
+            #DI = -((epsilon_old[i+1] * rho_g_old[i+1] * rho_l_old[i+1] * V_gj_old[i+1]**2 + areaMatrix[i+1] )/ ((1 - epsilon_old[i+1])*rho_old[i+1]) )  + ((epsilon_old[i] * rho_g_old[i] * rho_l_old[i] * V_gj_old[i]**2 + areaMatrix[i] )/ ((1 - epsilon_old[i])*rho_old[i]) )     
             VAR_VFM_Class.set_ADi(i, ci = 0,
             ai = - areaMatrix[i],
             bi = areaMatrix[i+1],
-            di = - ((rho_old[i+1]- rho_old[i])* g * DV / 2) + DI)
+            di = - ((rho_old[i+1]- rho_old[i])* g * DV / 2))
         
             VAR_VFM_Class.fillingOutsideBoundary(i, i-sizeMesh,
             ai = - rho_old[i]*VAR_old[i-sizeMesh]*areaMatrix_old_[i],
@@ -286,11 +279,11 @@ for j in range(N_iterations):
             di =  h_inlet)
 
         elif i > 2*sizeMesh and i < 3*sizeMesh:
-            DI = (1/2) * (VAR_old[i-sizeMesh]*areaMatrix[i] - VAR_old[i-1]*areaMatrix[i-1]) * ((VAR_old[i-2*sizeMesh]+ ((epsilon_old[i] * (rho_l_old[i] - rho_g_old[i]) * V_gj_old[i])/ rho_old[i]))+ (VAR_old[i-1-2*sizeMesh]+ ((epsilon_old[i-1] * (rho_l_old[i-1] - rho_g_old[i-1]) * V_gj_old[i-1])/ rho_old[i-1]) ) )
-            VAR_VFM_Class.set_ADi(i, ci =  - rho_old[i-1] * VAR_old[i-1-2*sizeMesh] * areaMatrix_old_[i-1],
-            ai = rho_old[i] * VAR_old[i-2*sizeMesh] * areaMatrix_old_[i],
+            DI = (1/2) * (VAR_old[i-sizeMesh]*areaMatrix[i] - VAR_old[i-1-sizeMesh]*areaMatrix[i-1]) * ( (VAR_old[i-2*sizeMesh] ) + (VAR_old[i-1-2*sizeMesh]) )
+            VAR_VFM_Class.set_ADi(i, ci =  - rho_old[i-1] * VAR_old[i-1-sizeMesh] * areaMatrix[i-1],
+            ai = rho_old[i] * VAR_old[sizeMesh] * areaMatrix[i],
             bi = 0,
-            di =  q__*DV + DI)
+            di =  DI)
 
     print(f'VAR_VFM_Class.A: {VAR_VFM_Class.A}, VAR_VFM_Class.D: {VAR_VFM_Class.D}')
     VAR = VAR_VFM_Class.resoudre_h()
@@ -298,22 +291,16 @@ for j in range(N_iterations):
     print(f'U: {U}, P: {P}, H: {H}')
 
     rho_old, rho_old0, rho_old0 = splitVar(rho_old)
-    rho_g_old, rho_g_old, rho_g_old = splitVar(rho_g_old)
-    rho_l_old, rho_l_old, rho_l_old = splitVar(rho_l_old)
-    V_gj_old, V_gj_old, V_gj_old = splitVar(V_gj_old)
-    Vgj_prime, Vgj_prime, Vgj_prime = splitVar(Vgj_prime)
-    epsilon_old, epsilon_old, epsilon_old = splitVar(epsilon_old)
-    areaMatrix, areaMatrix, areaMatrix = splitVar(areaMatrix)
-    areaMatrix_old_, areaMatrix_old_, areaMatrix_old_ = splitVar(areaMatrix_old_)
-    Dhfg, Dhfg, Dhfg = splitVar(Dhfg)
-    C0, C0, C0 = splitVar(C0)
-    x_th, x_th, x_th = splitVar(x_th)
-    T, T, T = splitVar(T)
+    areaMatrix_old_, areaMatrix_old0, areaMatrix_old0 = splitVar(areaMatrix_old_)
+    areaMatrix, areaMatrix0, areaMatrix0 = splitVar(areaMatrix)
 
-    
     for i in range(sizeMesh):
+        areaMatrix_old_[i] = getAreas(areaMatrix[i], Phi2Phi, f, D_h, K_loss, DV, Dz)
+    
+    """ for i in range(sizeMesh):
         rho_g_old[i], rho_l_old[i], rho_old[i], epsilon_old[i], x_th[i], C0[i], V_gj_old[i] = get_parameters(P[i]*10**(-6), H[i]*10**(-3), rho_l_old[i], rho_g_old[i], rho_old[i], epsilon_old[i], D_h, g, U[i], U_old[i])
         print(f"rho_g_old[i]: {rho_g_old[i]}, rho_l_old[i]: {rho_l_old[i]}, rho_old[i]: {rho_old[i]}, epsilon_old[i]: {epsilon_old[i]}, x_th[i]: {x_th[i]}, C0[i]: {C0[i]}, V_gj_old[i]: {V_gj_old[i]}")
+     """
     
     U_residual = np.linalg.norm(np.array(U) - np.array(U_old))
     P_residual = np.linalg.norm(np.array(P) - np.array(P_old))
