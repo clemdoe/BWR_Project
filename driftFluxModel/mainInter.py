@@ -18,6 +18,7 @@ def getTemperature(P, H):
 def getDensity(epsilon, H, P):
     T = getTemperature(P, H)
     #print(f'Inside getDensity: epsilon: {epsilon}, H: {H}, P: {P}, T: {T}')
+    print(f'T: {T}, epsilon: {epsilon}')
     state = IAPWS97(T = T, x = epsilon)
     rho_g = state.Vapor.rho
     rho_l = state.Liquid.rho
@@ -28,7 +29,7 @@ def getDensity(epsilon, H, P):
 
 #Function to calculate the areas of the mixture
 def getAreas(A, Phi2Phi, f, D_h, K_loss, DV, Dz):
-    A_chap = A #+  (Phi2Phi/2) * ((f / D_h) + (K_loss / Dz)) * DV
+    A_chap = A +  (Phi2Phi/2) * ((f / D_h) + (K_loss / Dz)) * DV
     return A_chap
 
 #Function to calculate the thermodynamic quality of the mixture
@@ -46,7 +47,8 @@ def getThermodynamicQuality(H, P):
     print(f'H: {H}, P: {P}, T: {T}, h_l_sat: {h_l_sat}, h_g_sat: {h_g_sat}')
     h_m = IAPWS97(P = P, h = H).h
     print(f'h_m: {h_m}')
-    x_th = h_m - h_l_sat / h_g_sat - h_l_sat #h_l_sat, h_g_sat are the specific enthalpies of the liquid and gas phases at saturation temperature
+    x_th = (h_m - h_l_sat) / (h_g_sat - h_l_sat) #h_l_sat, h_g_sat are the specific enthalpies of the liquid and gas phases at saturation temperature
+    print(f'x_th: {x_th}')
     return x_th
 
 #Function to calculate the drift velocity of the mixture
@@ -142,8 +144,8 @@ massFlowRate = 7000 #kg/m2/s
 
 #Initial/boundary conditions of the system
 rho_l_start= 1000 #kg/m3
-rho_g_start = 1 #kg/m3
-epsilon_start = 0
+rho_g_start = 916.8 #kg/m3
+epsilon_start = 0.0
 U_start = 7 #m/2
 T_inlet = 500 #K
 P_outlet = 10.800000*10**(6) #Pa
@@ -312,6 +314,8 @@ for j in range(N_iterations):
 
     
     for i in range(sizeMesh):
+        print(f"rho_g_old[i]: {rho_g_old[i]}, rho_l_old[i]: {rho_l_old[i]}, rho_old[i]: {rho_old[i]}, epsilon_old[i]: {epsilon_old[i]}, x_th[i]: {x_th[i]}, C0[i]: {C0[i]}, V_gj_old[i]: {V_gj_old[i]}")
+    
         rho_g_old[i], rho_l_old[i], rho_old[i], epsilon_old[i], x_th[i], C0[i], V_gj_old[i] = get_parameters(P[i]*10**(-6), H[i]*10**(-3), rho_l_old[i], rho_g_old[i], rho_old[i], epsilon_old[i], D_h, g, U[i], U_old[i])
         print(f"rho_g_old[i]: {rho_g_old[i]}, rho_l_old[i]: {rho_l_old[i]}, rho_old[i]: {rho_old[i]}, epsilon_old[i]: {epsilon_old[i]}, x_th[i]: {x_th[i]}, C0[i]: {C0[i]}, V_gj_old[i]: {V_gj_old[i]}")
     

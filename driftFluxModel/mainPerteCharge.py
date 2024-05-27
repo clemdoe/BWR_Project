@@ -14,6 +14,17 @@ def getTemperature(P, H):
     T = IAPWS97(P = P, h = H).T
     return T
 
+""" #Function to calculate the density of the mixture
+def getDensity(epsilon, H, P):
+    T = getTemperature(P, H)
+    #print(f'Inside getDensity: epsilon: {epsilon}, H: {H}, P: {P}, T: {T}')
+    rho_g_0 = 916.8 #kg/m3
+    rho_l_0 = 1000 #kg/m3
+    rho_g = rho_g_0 - 0.139 * (T - 273.15)
+    rho_l = rho_l_0 - 0.4583 * (T - 273.15)
+    rho = rho_l * (1 - epsilon) + rho_g * epsilon
+    return rho_g, rho_l, rho """
+
 #Function to calculate the density of the mixture
 def getDensity(epsilon, H, P):
     T = getTemperature(P, H)
@@ -143,7 +154,7 @@ massFlowRate = 7000 #kg/m2/s
 
 #Initial/boundary conditions of the system
 rho_l_start= 1000 #kg/m3
-rho_g_start = 1 #kg/m3
+rho_g_start = 916.8 #kg/m3
 epsilon_start = 0
 U_start = 7 #m/2
 T_inlet = 500 #K
@@ -297,10 +308,10 @@ for j in range(N_iterations):
     for i in range(sizeMesh):
         areaMatrix_old_[i] = getAreas(areaMatrix[i], Phi2Phi, f, D_h, K_loss, DV, Dz)
     
-    """ for i in range(sizeMesh):
+    for i in range(sizeMesh):
         rho_g_old[i], rho_l_old[i], rho_old[i], epsilon_old[i], x_th[i], C0[i], V_gj_old[i] = get_parameters(P[i]*10**(-6), H[i]*10**(-3), rho_l_old[i], rho_g_old[i], rho_old[i], epsilon_old[i], D_h, g, U[i], U_old[i])
         print(f"rho_g_old[i]: {rho_g_old[i]}, rho_l_old[i]: {rho_l_old[i]}, rho_old[i]: {rho_old[i]}, epsilon_old[i]: {epsilon_old[i]}, x_th[i]: {x_th[i]}, C0[i]: {C0[i]}, V_gj_old[i]: {V_gj_old[i]}")
-     """
+    
     
     U_residual = np.linalg.norm(np.array(U) - np.array(U_old))
     P_residual = np.linalg.norm(np.array(P) - np.array(P_old))
