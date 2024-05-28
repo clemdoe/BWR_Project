@@ -1,0 +1,129 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2312                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       volScalarField;
+    location    "0.03/water";
+    object      Ct2;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 0 0 0 0];
+
+internalField   uniform 1;
+
+boundaryField
+{
+    emptyPatch
+    {
+        type            empty;
+    }
+    minY
+    {
+        type            calculated;
+        value           nonuniform List<scalar> 
+21
+(
+8.97343291429
+8.97343348948
+8.97343373202
+8.97343357768
+8.97343348958
+8.97343343169
+8.97343338298
+8.97343333877
+8.97343329974
+8.97343326624
+8.97343323645
+8.97343320886
+8.97343318467
+8.97343316629
+8.9734331536
+8.97343314198
+8.97343313289
+8.97343314322
+8.97343319253
+8.9734332599
+8.97343356134
+)
+;
+    }
+    maxY
+    {
+        type            calculated;
+        value           nonuniform List<scalar> 0();
+    }
+    maxX
+    {
+        type            calculated;
+        value           nonuniform List<scalar> 0();
+    }
+    water_to_heater
+    {
+        type            calculated;
+        value           uniform 1;
+    }
+    procBoundary0to1
+    {
+        type            processor;
+        value           nonuniform List<scalar> 
+38
+(
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1.00041912654
+1
+1
+1
+1
+1
+1
+1
+1.03631771076
+1.04963397063
+1
+)
+;
+    }
+    procBoundary0to3
+    {
+        type            processor;
+        value           uniform 1;
+    }
+}
+
+
+// ************************************************************************* //

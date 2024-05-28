@@ -37,6 +37,20 @@ def getDensity(epsilon, H, P):
     rho = rho_l * (1 - epsilon) + rho_g * epsilon
     return rho_g, rho_l, rho
 
+def getReynolds(U, D_h, mu):
+    Re =U*D_h/mu
+    return Re
+
+def getPhi2phi(epsilon):
+    return 1+3*epsilon
+
+def getFrictionFactor(U, D_h, mu):
+    Re = getReynolds(U, D_h, mu)
+    if Re < 1000:
+        return 16*Re
+    else:
+        return 0.184 * Re**(0.2)
+
 #Function to calculate the areas of the mixture
 def getAreas(A, Phi2Phi, f, D_h, K_loss, DV, Dz):
     A_chap = A +  (Phi2Phi/2) * ((f / D_h) + (K_loss / Dz)) * DV
@@ -96,9 +110,12 @@ def get_parameters(P,H,rho_l,rho_g,rho,epsilon, D_h, g, U, U_old):
             rho_old = rho
             epsilon_old = epsilon
         
+    mu = IAPWS97(P = P, x = epsilon).mu
     x_th = getThermodynamicQuality(H, P)
     C0 = getC0(rho_g, rho_l)
     Vgj = getDriftVelocity(rho_g, rho_l, g, D_h)
+    A = getAreas(A, getPhi2phi(epsilon), getFrictionFactor(U, D_h, mu), D_h, K_loss, DV, Dz)
+
     
     return rho_g, rho_l, rho, epsilon, x_th, C0, Vgj
 

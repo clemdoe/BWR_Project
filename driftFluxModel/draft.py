@@ -6,11 +6,17 @@ from class_MVF import FVM
 import numpy as np
 from iapws import IAPWS97
 import matplotlib.pyplot as plt
+from iapws import _Region4
 
-rho_liquide_sat = IAPWS97(P=791.7e-3, x=0).rho
+
+""" rho_liquide_sat = IAPWS97(P=791.7e-3, x=0).rho
 rho_vapeur_sat = IAPWS97(P=791.7e-3, x=1).rho
 masse_tot = rho_liquide_sat*0.1 + rho_vapeur_sat*0.9
 
 x = rho_vapeur_sat * 0.9 / masse_tot
 print(x)
-print(f'Masse totale : {masse_tot:.3f} kg.')
+print(f'Masse totale : {masse_tot:.3f} kg.')  """
+
+
+gas = _Regions4(P = 0.101325, x = 0)
+print(f'enthalpy saturated liquid= {gas.h}')

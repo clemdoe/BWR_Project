@@ -1,0 +1,120 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2312                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       regIOobject;
+    location    "constant/water/polyMesh";
+    object      faceZones;
+    meta
+    {
+        names           2 ( merge1merge20CutFaceZone merge3merge41Side0Zone );
+    }
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+2
+(merge1merge20CutFaceZone
+{
+    type            faceZone;
+    faceLabels      List<label> 0();
+    flipMap         List<bool> 0();
+}
+merge3merge41Side0Zone
+{
+    type            faceZone;
+    faceLabels      List<label> 
+37
+(
+1
+3
+5
+7
+9
+11
+13
+15
+17
+18
+3019
+3020
+3021
+3022
+3023
+3024
+3025
+3026
+3027
+3028
+3030
+3042
+3043
+3044
+3045
+3046
+3047
+3048
+3049
+3050
+3051
+3052
+3053
+3054
+3055
+3056
+3057
+)
+;
+    flipMap         List<bool> 
+37
+(
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+)
+;
+}
+)
+
+// ************************************************************************* //
