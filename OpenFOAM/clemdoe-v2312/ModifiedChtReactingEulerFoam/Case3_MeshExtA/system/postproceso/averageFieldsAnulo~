@@ -1,0 +1,69 @@
+// Obtengo los campos promedios
+
+	fieldAverage1
+    {
+        type            fieldAverage;
+        libs ( "libfieldFunctionObjects.so" );
+        writeControl    writeTime;
+		region          region0;
+        fields
+        (
+			phiSteam
+			{
+                 mean        on;
+                 prime2Mean  off;
+                 base        time;
+            }
+
+			phiWater
+			{
+                 mean        on;
+                 prime2Mean  off;
+                 base        time;
+            }
+
+            U.water
+            {
+                 mean        on;
+                 prime2Mean  off;
+                 base        time;
+            }
+
+            U.steam
+            {
+                 mean        on;
+                 prime2Mean  off;
+                 base        time;
+            }
+
+            alpha.steam
+            {
+                 mean        on;
+                 prime2Mean  off;
+                 base        time;
+            }
+
+            T.water
+            {
+                 mean        on;
+                 prime2Mean  off;
+                 base        time;
+            }
+
+			wDmdt.steamAndWater
+            {
+                 mean        on;
+                 prime2Mean  off;
+                 base        time;
+            }
+
+			iDmdt.steamAndWater
+			{
+                 mean        on;
+                 prime2Mean  off;
+                 base        time;
+            }
+
+
+        );
+    }

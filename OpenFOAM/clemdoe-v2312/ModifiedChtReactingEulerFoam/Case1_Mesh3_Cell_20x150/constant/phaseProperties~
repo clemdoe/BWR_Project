@@ -1,0 +1,295 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      phaseProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+type    thermalPhaseChangeTwoPhaseSystem;
+
+phases (steam water);
+
+phaseChange on;
+
+steam
+{
+	type            purePhaseModel;
+    diameterModel   constant;
+    constantCoeffs
+    {
+        d                0.0003; //3e-3;
+    }
+    Sc              0.7;
+
+    residualAlpha   1e-4;
+}
+
+water
+{
+    type            purePhaseModel;
+    diameterModel   constant;
+    constantCoeffs
+    {
+        d               0.0006; //3e-3;
+    }
+    Sc              0.7;
+
+    residualAlpha   1e-4;
+}
+
+blending
+{
+	//Este es el seteo del solver twoPhaseEulerFoam
+  /*  default
+    {
+        //type            none;
+        //continuousPhase liquid;
+		type            linear; //none
+		continuousPhase   water;
+		maxFullyDispersedAlpha.steam 0.3;
+        maxPartlyDispersedAlpha.steam 0.5;
+        maxFullyDispersedAlpha.water 0.3;
+        maxPartlyDispersedAlpha.water 0.5;
+    }*/
+
+	/*default
+    {
+        type            none;
+        continuousPhase water;
+    }*/
+
+   default
+    {
+        type            linear;
+        minFullyContinuousAlpha.steam 0.7;
+        minPartlyContinuousAlpha.steam 0.3;
+        minFullyContinuousAlpha.water 0.7;
+        minPartlyContinuousAlpha.water 0.3;
+    }
+    
+
+    heatTransfer.steam
+    {
+        type            none;
+	continuousPhase water;
+       
+    }
+
+    heatTransfer.water
+    {
+        type            none;
+	continuousPhase water;
+       
+    }
+
+}
+
+
+
+surfaceTension
+(
+    (steam and water)
+    {
+        type            constant;
+        sigma           0.038; // Este valor estaba en el tutorial 0.07; //El valor 0.038 lo saque del curso de ANSYS
+    }
+
+    (water and steam)
+    {
+        type            constant;
+        sigma           0.038; 
+    }
+);
+
+saturationModel
+{
+        type constant;
+
+        Tsat 530.65;
+        pSat 4.5e6;
+};
+
+aspectRatio
+(
+//Esto lo tenia implementado yo en el trabajo
+
+    (steam in water)
+    {
+        type            constant;
+        E0              0.01777207997368;
+    }
+
+    (water in steam)
+    {
+        type            constant;
+        E0               0.07108831989474; 
+    }
+);
+
+drag
+(
+ 	(steam in water)
+    {
+        type            Grace; 
+		A		16;
+        residualAlpha   1e-6;
+        residualRe      1e-6;
+		muref1          0.0009;
+		gref		9.81;		        
+		swarmCorrection
+        {
+            type        none;
+        }
+    }
+
+    (water in steam)
+    {
+      	type            TomiyamaCorrelated; 
+		A		16;        
+		residualRe      1e-3;
+		residualAlpha   1e-3;        
+        swarmCorrection
+        {
+            type        none;
+        }
+    }
+
+    (steam and water)
+    {
+        type            segregated;
+        m               0.5;
+        n               8;
+        swarmCorrection
+        {
+            type        none;
+        }
+    }
+
+
+);
+
+virtualMass
+(
+    
+    (steam in water)
+    {
+        type            constantCoefficient;
+        Cvm             0.5;
+    }
+
+    (water in steam)
+    {
+        type            constantCoefficient;
+        Cvm             0.5;
+    }
+);
+
+heatTransfer.steam
+(
+    (steam in water)
+    {
+		type            RanzMarshall;		
+        residualAlpha   1e-3;        
+    }
+
+	(water in steam)
+    {
+		type            RanzMarshall; 
+        residualAlpha   1e-3;        
+    }
+
+);
+
+heatTransfer.water
+(
+    (steam in water)
+    {
+		type            RanzMarshall; 		
+        residualAlpha   1e-3;        
+    }
+
+	(water in steam)
+    {
+		type            RanzMarshall;
+        residualAlpha   1e-3;        
+    }
+
+);
+
+
+phaseTransfer
+();
+
+lift
+(
+	(steam in water)
+    {
+     	type            Tomiyama; 
+    }
+
+  	(water in steam)
+    {
+     	type            Tomiyama; 
+    }
+);
+
+wallLubrication
+(
+	(steam in water)
+    {
+     	type            Frank; //Tomiyama; //constantCoefficient; //Tomiyama 
+        Cwd             6.8; // 10;
+   		Cwc		10; //8.5;
+    	p		1.7;
+ 		//Los valores para las constantes de Frank los saque de la siguiente pagina
+		//https://www.sharcnet.ca/Software/Ansys/16.2.3/en-us/help/flu_th/flu_th_sec_eulermp_walllube.html#flu_th_sec_eulermp_wl_Frank
+    
+    }
+	/*(water in steam)
+    {
+     	type            Frank; //Tomiyama; //constantCoefficient; //Tomiyama 
+        Cwd             6.8; // 10;
+   		Cwc		10; //8.5;
+    	p		1.7;
+ 		//Los valores para las constantes de Frank los saque de la siguiente pagina
+		//https://www.sharcnet.ca/Software/Ansys/16.2.3/en-us/help/flu_th/flu_th_sec_eulermp_walllube.html#flu_th_sec_eulermp_wl_Frank
+    }*/
+);
+
+turbulentDispersion
+(
+     (steam in water)
+     {
+        type                Burns; //LopezDeBertodano; //LopezDeBertodano; //Burns; //LopezDeBertodano; //Gosman; //Burns;//
+        sigma               0.7; //0.7 --> Burns; // 0.9 --> Lopez Bertodano;
+        Ctd                 1; //1.0;  //1.0 --> Burns; // 0.35 --> Lopez Bertodano;
+        residualAlpha       1e-4 ; // Este residual alpha es para que no te quede dividiendo por cero en la expresion de coficiente de dispersion
+    }
+
+	/*(water in steam)
+    {
+     	type                Burns; //LopezDeBertodano; //LopezDeBertodano; //Burns; //LopezDeBertodano; //Gosman; //Burns;//
+        sigma               0.9; //0.7 --> Burns; // 0.9 --> Lopez Bertodano;
+        Ctd                 0.5; //1.0;  //1.0 --> Burns; // 0.35 --> Lopez Bertodano;
+        residualAlpha       1e-4 ; // Este residual alpha es para que no te quede dividiendo por cero en la expresion de coficiente de dispersion
+    
+    }*/
+
+);
+
+// Minimum allowable pressure
+//Valor que tenia seteado yo
+pMin            10000;
+
+
+// ************************************************************************* //

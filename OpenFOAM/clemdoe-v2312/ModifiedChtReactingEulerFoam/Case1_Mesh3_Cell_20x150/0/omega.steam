@@ -1,0 +1,78 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  7                                  |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      epsilon.steam;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//Use la calculadora de CFD online con los siguientes datos:
+// Uinf = 1.14269
+// Viscosidad cinematica = mu/rho = 17.77e-6 / 22.69 = 0.000000783
+// Intensidad turbulenta = 2
+// Longitud turbulenta l = 0.038*d_h dh = diametro hidraulico, 
+// para tuberia circular es igual all diametro l = 0.038 * 0.0154 = 0.0005852
+// k = 0.00078345
+// epsilon = 0.003372549
+// omega = 47.83022
+
+
+//Use la calculadora de CFD online con los siguientes datos:
+// Uinf = 1.037132
+// Viscosidad cinematica = mu/rho = 1.07e-4 / 787.9 = 1.35804036e-7
+// Intensidad turbulenta = 5
+// Longitud turbulenta l = 0.038*d_h dh = diametro hidraulico, 
+// para tuberia circular es igual all diametro l = 0.038 * 0.0154/2 = 2.926e-4
+// k = 0.0040336
+// epsilon = 0.039399
+// omega = 108.5288
+
+
+dimensions      [0 0 -1 0 0 0 0]; 
+
+internalField   uniform 108.528; 
+
+boundaryField
+{
+    inlet
+    {
+        type            fixedValue;
+	  	value           uniform 108.528;
+    }
+
+    outlet
+    {
+         type            inletOutlet;
+        phi             phi.water;
+        inletValue      $internalField;
+        value           $internalField;
+    }
+    
+	back
+    {
+        type            wedge;
+    }
+
+    front
+    {
+        type            wedge;
+    }
+
+    pared
+    {
+        type            omegaWallFunction;
+        value           uniform 108.528;
+    }
+}
+
+
+// ************************************************************************* //
+

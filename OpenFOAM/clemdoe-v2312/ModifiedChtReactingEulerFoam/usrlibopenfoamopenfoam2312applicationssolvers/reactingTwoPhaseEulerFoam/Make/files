@@ -1,0 +1,5 @@
+fluid/compressibleCourantNoFluid.C
+solid/solidRegionDiffNo.C
+reactingTwoPhaseEulerFoam.C
+
+EXE = $(FOAM_USER_APPBIN)/chtReactingTwoPhaseEulerFoam_Modif1

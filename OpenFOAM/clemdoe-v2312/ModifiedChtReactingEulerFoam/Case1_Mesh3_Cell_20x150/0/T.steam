@@ -1,0 +1,57 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  7
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "5";
+    object      T.steam;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 472.4;
+
+boundaryField
+{
+    inlet
+    {
+        type            fixedValue;
+        value           uniform 472.4;
+    }
+
+    outlet
+    {
+		type            inletOutlet;
+        phi             phi.steam;
+        inletValue      uniform 530.6;
+        value           uniform 530.6;
+    }
+    
+	back
+    {
+        type            wedge;
+    }
+
+    front
+    {
+        type            wedge;
+    }
+
+    pared
+    {
+        type            copiedFixedValue;
+        sourceFieldName T.water;
+        value           uniform 472.4;
+    }
+}
+
+
+// ************************************************************************* //

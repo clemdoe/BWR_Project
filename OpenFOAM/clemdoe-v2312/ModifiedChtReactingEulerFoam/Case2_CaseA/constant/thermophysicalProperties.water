@@ -1,0 +1,63 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      thermophysicalProperties.water;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+thermoType
+{
+    type            heRhoThermo;
+    mixture         pureMixture;
+    transport       const;
+    thermo          hRefConst;
+    equationOfState rhoConst;
+    specie          specie;
+    energy          sensibleEnthalpy;
+}
+
+dpdt no;
+
+mixture
+{
+	// Propiedades del FC-72 para una presion de 101325 Pa en estado liquidoo
+	// Tsat = 56oC = 329 K
+
+    specie
+    {
+        molWeight       340; 
+    }
+    equationOfState
+    {
+        rho        1620.94; 
+    }
+    thermodynamics
+    {
+        Hf          0;
+        Cp          1096; 
+        Tref        329; 
+        Href        0; 
+    }
+    transport
+    {
+        mu          447e-6;
+        Pr          9.061;
+    }
+}
+
+
+
+
+
+
+// ************************************************************************* //

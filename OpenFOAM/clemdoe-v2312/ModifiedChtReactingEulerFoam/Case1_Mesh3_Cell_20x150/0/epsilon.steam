@@ -1,0 +1,76 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  7
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      epsilon.steam;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//Use la calculadora de CFD online con los siguientes datos:
+// Uinf = 1.037132
+// Viscosidad cinematica = mu/rho = 17.77e-6 / 22.69 = 0.000000783
+// Intensidad turbulenta = 2
+// Longitud turbulenta l = 0.038*d_h dh = diametro hidraulico, 
+// para tuberia circular es igual all diametro l = 0.038 * 0.0154 = 0.0005852
+// k = 0.00078345
+// epsilon = 0.003372549
+// omega = 47.83022
+
+//Use la calculadora de CFD online con los siguientes datos:
+// Uinf = 1.037132
+// Viscosidad cinematica = mu/rho = 1.07e-4 / 787.9 = 1.35804036e-7
+// Intensidad turbulenta = 5
+// Longitud turbulenta l = 0.038*d_h dh = diametro hidraulico, 
+// para tuberia circular es igual all diametro l = 0.038 * 0.0154/2 = 2.926e-4
+// k = 0.0040336
+// epsilon = 0.039399
+// omega = 108.5288
+
+
+dimensions      [0 2 -3 0 0 0 0];
+
+internalField   uniform  0.039399; 
+
+boundaryField
+{
+    inlet
+    {
+        type            fixedValue;
+	  	value           uniform  0.039399; 
+    }
+
+    outlet
+    {
+         type            inletOutlet;
+        phi             phi.steam;
+        inletValue      $internalField;
+    }
+    
+	back
+    {
+        type            wedge;
+    }
+
+    front
+    {
+        type            wedge;
+    }
+
+    pared
+    {
+        type            epsilonWallFunction;
+        value           uniform  0.039399; 
+    }
+}
+
+
+// ************************************************************************* //

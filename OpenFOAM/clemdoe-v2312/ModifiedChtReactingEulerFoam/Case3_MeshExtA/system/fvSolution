@@ -1,0 +1,130 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    "alpha.*"
+    {
+        nAlphaCorr      1;
+        nAlphaSubCycles 3;
+    }
+
+    p_rgh
+    {
+        solver          GAMG;
+        smoother        DIC;
+        tolerance       1e-11;
+        relTol          0.001;
+        maxIter         80;
+        minIter         2;
+    }
+
+    p_rghFinal
+    {
+        $p_rgh;
+        relTol          0;
+    }
+
+    "U.*"
+    {
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-6;
+        relTol          0;
+        minIter         1;
+    }
+
+    "(e|h).*"
+    {
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-12;
+        relTol          0.001;
+        minIter         1;
+        maxIter         20;
+    }
+
+    "(k|epsilon|Theta|omega).*"
+    {
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-10;
+        relTol          0;
+        minIter         1;
+	maxIter         50;
+    }
+
+    Yi
+    {
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-6;
+        relTol          0;
+        minIter         1;
+        residualAlpha   1e-8;
+    }
+}
+
+PIMPLE
+{
+    nOuterCorrectors    3;
+    nCorrectors         5;
+    nNonOrthogonalCorrectors 3;
+    nEnergyCorrectors   12;
+    faceMomentum        yes;
+}
+
+
+relaxationFactors
+{
+       fields
+    {
+		iDmdt           0.1; 
+        "p_rgh"         0.4;
+		"p"             0.4;
+		"pFinal"		0.4;
+		"p_rghFinal"	0.4;
+    }
+    equations
+    {
+
+        "U.*"           0.6;
+        "U.steamFinal"    0.6;
+        "U.waterFinal"  0.6;
+     	"k.steam"    		0.3;
+     	"k.water"  		0.3;
+     	"k.steamFinal"    		0.3;
+     	"k.waterFinal"  		0.3;
+        "epsilon.steam"    		0.3;
+     	"epsilon.water"  		0.3;
+     	"epsilon.steamFinal"    	0.3;
+     	"epsilon.waterFinal"  	0.3;
+		"omega.steam"             0.3;
+		"omega.steamFinal"             0.3;
+		"omega.water"      0.3;
+		"omega.waterFinal"      0.3;
+        "e.steam*"              0.3; 
+        "e.water*"                0.3; 
+		"h.*"           0.3;
+
+    }
+
+    }
+}
+
+
+// ************************************************************************* //

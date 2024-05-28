@@ -1,0 +1,20 @@
+	// Campos maximos y minimos
+
+	// Campos que tengo que agregar
+	// Fdrag Flift Fwall Fdispt Fliftwall
+
+	minmax                        
+    {
+		type            fieldMinMax;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        //outputControl   timeStep;
+		writeControl    timeStep;        
+		//log             true;       // log to screen?
+        //valueOutput     true;       // Write values at run-time output times?
+        source          cellZone; //all; // Type of cell source or all for the full domain
+        fields
+        (
+            T.steam T.water U.water U.steam p_rgh alpha.steam nut.steam nut.water k.water k.steam omega.steam omega.water
+        );
+    }
+

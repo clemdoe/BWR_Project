@@ -1,0 +1,1110 @@
+//Mido los valores promedios en PlanoAnulos sucesivos
+		PlanoAnulo0
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo0;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+
+		PlanoAnulo1
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo1;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.05);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U 
+				);
+        }
+
+		PlanoAnulo2
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo2;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.1);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo3
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo3;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.015);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo4
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo4;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.2);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo5
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl    writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo5;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.25);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo6
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo6;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.3);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo7
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo7;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.35);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo8
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo8;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.4);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+
+		PlanoAnulo9
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo9;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.45);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo10
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo10;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.5);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo11
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo11;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.55);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo12
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo12;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.6);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo13
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo13;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.65);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo14
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo14;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.7);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo15
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo15;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.75);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo16
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo16;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.8);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo17
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo17;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.85);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo18
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo18;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.9);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo19
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo19;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.95);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo20
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo20;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.0);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo21
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo21;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.05);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo22
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo22;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.1);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo23
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo23;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.15);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo24
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo24;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.2);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo25
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo25;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.25);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo26
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo26;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.3);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo27
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo27;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.35);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo28
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo28;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.4);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo29
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo29;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.45);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo30
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo30;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.5);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo31
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo31;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.55);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo32
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo32;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.6);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo33
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo33;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.65);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo34
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo34;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.7);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo35
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo35;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.75);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo36
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo36;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.8);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo37
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo37;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.85);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo38
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo38;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.9);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo39
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo39;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.95);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+
+		PlanoAnulo40
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				region          anulo;
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			PlanoAnulo40;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.999);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    T U
+				);
+        }
+

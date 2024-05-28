@@ -1,0 +1,26 @@
+// Alpha total a la salida
+	
+	Taverage_Primario
+    {
+		//OpenFOAM 7		
+		type              surfaceFieldValue;
+        libs ("libfieldFunctionObjects.so");
+        enabled         true;
+		region          anulo;
+        writeControl    timeStep; //writeTime;   
+        writeFields     false; //true;
+        regionType      patch;
+        name      		outlet_primario;
+        // Operation: areaAverage/sum/weightedAverage ...
+        operation       weightedAverage; //average; //areaAverage; //weightedAverage; // banana; //sum; 
+
+		weightField     phi;
+
+        fields
+        (
+            T       
+        );		
+    }
+
+
+

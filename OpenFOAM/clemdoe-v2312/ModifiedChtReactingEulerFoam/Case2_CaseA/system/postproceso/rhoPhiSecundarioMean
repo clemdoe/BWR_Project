@@ -1,0 +1,94 @@
+// Caudal a la salir
+
+
+	Salida_dosfluidosmean
+   {
+       type            surfaceFieldValue;
+       functionObjectLibs ("libfieldFunctionObjects.so");   
+	   //log             true;
+		region          region0;
+       writeControl    timeStep;
+       writeFields     false;
+
+       regionType      patch;
+       name            outlet;
+       operation       sum;
+
+       fields
+       (
+           phiSteamMean phiWaterMean
+       );
+   }
+
+
+
+
+/*
+	rhoPhi
+    {
+		//OpenFOAM 7		
+		type              surfaceFieldValue;
+        libs ("libfieldFunctionObjects.so");
+        enabled         true;
+		region          region0;
+        writeControl    timeStep; //writeTime;   
+        writeFields     false; //true;
+        regionType      patch;
+        name      		outlet;
+        // Operation: areaAverage/sum/weightedAverage ...
+        operation       sumMag; //areaAverage*sum; //weightedAverage; // banana; //sum; 
+
+        fields
+        (
+             rhoPhiSteam rhoPhiWater
+        );		
+    }
+
+	/*rhoPhisteam
+    {
+		//OpenFOAM 7		
+		type              surfaceFieldValue;
+        libs ("libfieldFunctionObjects.so");
+        enabled         true;
+		region          region0;
+        writeControl    timeStep; //writeTime;   
+        writeFields     false; //true;
+        regionType      patch;
+        name      		outlet;
+        // Operation: areaAverage/sum/weightedAverage ...
+        operation       sumMag; //areaAverage*sum; //weightedAverage; // banana; //sum; 
+
+        fields
+        (
+             rhoPhiSteam
+        );		
+    }*/
+
+
+/*
+VentEquipo
+   {
+       type            surfaceFieldValue;
+       functionObjectLibs ("libfieldFunctionObjects.so");
+   
+log             true;
+       writeControl    timeStep;
+       writeFields     true;
+
+       regionType      faceZone;
+       name            VentEquipo;
+       
+
+operation       sumDirectionBalance;
+direction (1 0 0);
+surfaceFormat raw;
+
+       orientedFields
+       (
+           phi
+       );
+fields
+       (
+         //
+       );
+   }*/

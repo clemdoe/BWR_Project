@@ -1,0 +1,27 @@
+// Alpha total a la salida
+	
+	Alpha_Total_outlet
+    {
+		//OpenFOAM 4		
+		type             surfaceFieldValue;
+        libs ("libfieldFunctionObjects.so");
+        enabled         true;
+		region          region0;
+        writeControl    timeStep; //writeTime;   
+        writeFields     false; //true;
+        regionType      patch;
+        name      		outlet;
+        // Operation: areaAverage/sum/weightedAverage ...
+        operation       weightedAverage; //average; //areaAverage; //weightedAverage; // banana; //sum; 
+
+		weightField     phi.steam;
+
+        fields
+        (
+            alpha.steam       
+        );		
+    }
+
+
+
+

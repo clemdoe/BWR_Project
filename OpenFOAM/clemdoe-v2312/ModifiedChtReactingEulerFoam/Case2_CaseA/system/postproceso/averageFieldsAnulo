@@ -1,0 +1,26 @@
+// Obtengo los campos promedios
+
+	fieldAverage1
+    {
+        type            fieldAverage;
+        libs ( "libfieldFunctionObjects.so" );
+        writeControl    writeTime;
+		region          anulo;
+        fields
+        (
+			T
+			{
+                 mean        on;
+                 prime2Mean  off;
+                 base        time;
+            }
+
+			U
+			{
+                 mean        on;
+                 prime2Mean  off;
+                 base        time;
+            }           
+
+        );
+    }

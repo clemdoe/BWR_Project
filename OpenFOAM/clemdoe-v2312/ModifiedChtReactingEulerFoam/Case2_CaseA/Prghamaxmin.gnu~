@@ -1,0 +1,11 @@
+#set nonlogscale y
+set title "Presiones maximas y minimas"
+set ylabel 'Presion'
+set xlabel 'Iteration'
+#set yrange [0.03125:0.035]
+#set xrange [2000:]
+plot "< cat log | grep 'fieldMinMax minmax write:' -A10 | grep 'max(p_rgh) =' | cut -d' ' -f7 | tr -d =,=" title 'prgh_max' with lines,\
+"< cat log | grep 'fieldMinMax minmax write:' -A9 | grep 'max(p_rgh) =' | cut -d' ' -f7 | tr -d =,=" title 'prgh.min' with lines
+
+pause 5
+reread

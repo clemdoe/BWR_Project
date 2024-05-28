@@ -1,0 +1,278 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      phaseProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+type    thermalPhaseChangeTwoPhaseSystem;
+
+//Este orden steam water en principio lo cambiarlo porque en 
+//una parte lo leo de esta forma
+phases (steam water);
+
+phaseChange on;
+
+steam
+{
+	type            purePhaseModel;
+    diameterModel   constant;
+    constantCoeffs
+    {
+        d                0.001;
+    }
+    Sc              0.7;
+
+    residualAlpha   1e-4;
+}
+
+water
+{
+    type            purePhaseModel;
+    diameterModel   constant;
+    constantCoeffs
+    {
+        d               0.003; 
+    }
+    Sc              0.7;
+
+    residualAlpha   1e-4;
+}
+
+blending
+{
+
+   default
+    {
+        type            linear;
+        minFullyContinuousAlpha.steam 0.7;
+        minPartlyContinuousAlpha.steam 0.3;
+        minFullyContinuousAlpha.water 0.7;
+        minPartlyContinuousAlpha.water 0.3;
+    }
+    
+
+    heatTransfer.steam
+    {
+        type            none;
+	continuousPhase water;
+       
+    }
+
+    heatTransfer.water
+    {
+        type            none;
+	continuousPhase water;
+       
+    }
+
+}
+
+
+
+surfaceTension
+(
+    (steam and water)
+    {
+        type            constant;
+        sigma           0.0105; 
+    }
+
+    (water and steam)
+    {
+        type            constant;
+        sigma           0.0105; 
+    }
+);
+
+saturationModel
+{
+        type constant;
+
+        Tsat 329.5; //530.65;
+        pSat 101325; //4.5e6;
+};
+
+aspectRatio
+(
+//Esto lo tenia implementado yo en el trabajo
+
+    (steam in water)
+    {
+        type            constant;
+        E0             0.1352;
+    }
+
+    (water in steam)
+    {
+        type            constant;
+        E0             0.5408;
+    }
+);
+
+drag
+(
+ 	(steam in water)
+    {
+        type            Grace; 
+		A		16;
+        residualAlpha   1e-6;
+        residualRe      1e-6;
+		muref1          0.0009;
+		gref		9.81;		        
+		swarmCorrection
+        {
+            type        none;
+        }
+    }
+
+    (water in steam)
+    {
+      	type            TomiyamaCorrelated; 
+		A		16;        
+		residualRe      1e-3;
+		residualAlpha   1e-3;        
+        swarmCorrection
+        {
+            type        none;
+        }
+    }
+
+    (steam and water)
+    {
+        type            segregated;
+        m               0.5;
+        n               8;
+        swarmCorrection
+        {
+            type        none;
+        }
+    }
+
+
+);
+
+virtualMass
+(
+    
+    (steam in water)
+    {
+        type            constantCoefficient;
+        Cvm             0.5;
+    }
+
+    (water in steam)
+    {
+        type            constantCoefficient;
+        Cvm             0.5;
+    }
+);
+
+heatTransfer.steam
+(
+    (steam in water)
+    {
+		type            RanzMarshall;		
+        residualAlpha   1e-3;        
+    }
+
+	(water in steam)
+    {
+		type            RanzMarshall; 
+        residualAlpha   1e-3;        
+    }
+
+);
+
+heatTransfer.water
+(
+    (steam in water)
+    {
+		type            RanzMarshall; 		
+        residualAlpha   1e-3;        
+    }
+
+	(water in steam)
+    {
+		type            RanzMarshall;
+        residualAlpha   1e-3;        
+    }
+
+);
+
+
+phaseTransfer
+();
+
+lift
+(
+	(steam in water)
+    {
+     	type            Tomiyama; 
+    }
+
+  	(water in steam)
+    {
+     	type            Tomiyama; 
+    }
+);
+
+wallLubrication
+(
+	(steam in water)
+    {
+     	type            Frank; 
+        Cwd             6.8; 
+   		Cwc		10; 
+    	p		1.7;
+ 		//Los valores para las constantes de Frank los saque de la siguiente pagina
+		//https://www.sharcnet.ca/Software/Ansys/16.2.3/en-us/help/flu_th/flu_th_sec_eulermp_walllube.html#flu_th_sec_eulermp_wl_Frank
+    
+    }
+	(water in steam)
+    {
+     	type            Frank; 
+        Cwd             6.8; 
+   		Cwc		10;
+    	p		1.7;
+ 		//Los valores para las constantes de Frank los saque de la siguiente pagina
+		//https://www.sharcnet.ca/Software/Ansys/16.2.3/en-us/help/flu_th/flu_th_sec_eulermp_walllube.html#flu_th_sec_eulermp_wl_Frank
+    }
+);
+
+turbulentDispersion
+(
+     (steam in water)
+     {
+        type                Burns;
+        sigma               0.7; 
+        Ctd                 1; 
+        residualAlpha       1e-4;
+    }
+
+	(water in steam)
+    {
+     	type                Burns;
+        sigma               0.9;
+        Ctd                 0.5;
+        residualAlpha       1e-4;    
+    }
+
+);
+
+// Minimum allowable pressure
+//Valor que tenia seteado yo
+pMin            10000;
+
+
+// ************************************************************************* //

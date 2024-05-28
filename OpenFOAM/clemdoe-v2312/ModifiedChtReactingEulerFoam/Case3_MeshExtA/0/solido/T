@@ -1,0 +1,68 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  7  
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0/solido";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 520;
+
+boundaryField
+{
+
+
+	pared
+	{
+        type            zeroGradient;
+    }
+
+	front
+    {
+        type            wedge;
+    }
+
+	back
+    {
+        type            wedge;
+    }
+
+
+ 	solido_to_anulo
+    {		
+		type            compressible::turbulentTemperatureCoupledBaffleMixed_Modif2;
+        value           $internalField;
+        Tnbr            T;
+        kappaMethod     solidThermo;
+		TwoFluidAcoupled   false;
+		TypeRegion         fluido;  
+		//Esto lo activo cuando acoplo una region de dos fluidos
+		// con un solido o una region monofasica         			
+    }
+    solido_to_region0
+    {
+		type            compressible::turbulentTemperatureCoupledBaffleMixed_Modif2;
+        value           $internalField;
+        Tnbr            T.water;
+        kappaMethod     solidThermo;
+		TwoFluidAcoupled   true;   
+		TypeRegion         solido;
+		//Esto lo activo cuando acoplo una region de dos fluidos
+		// con un solido o una region monofasica   
+    }
+
+}
+
+
+// ************************************************************************* //

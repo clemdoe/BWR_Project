@@ -1,0 +1,63 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    location    "0";
+    object      U.water;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform (0 0 1.011091);
+
+boundaryField
+{
+    inlet_secundario
+    {
+	  type               	fixedValue;
+		value           uniform (0 0 1.011091);
+	// Caudal total 900 kg/sm2 => Como la densidad es 890.12 kg/m3. 
+	//Entocnes al hacer 900 kg/sm2 / 890.12 kg/m3 
+    }
+
+    outlet_secundario
+    {
+        type            pressureInletOutletVelocity;
+        phi             phi.water;
+        value           uniform (0 0 1.011091);
+
+    }
+    
+	front
+    {
+        type            wedge;
+    }
+
+	back
+    {
+        type            wedge;
+    }
+
+	region0_to_solido
+	{
+        type            fixedValue;
+        value           uniform (0 0 0);
+    }
+    pared
+	{
+        type            fixedValue;
+        value           uniform (0 0 0);
+    }
+}
+
+
+// ************************************************************************* //

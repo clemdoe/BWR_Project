@@ -1,0 +1,52 @@
+EXE_INC = \
+    -ItwoPhaseSystem/lnInclude \
+    -I../phaseSystems/lnInclude \
+    -I../interfacialModels/lnInclude \
+    -I../interfacialCompositionModels/lnInclude \
+    -ItwoPhaseCompressibleTurbulenceModels/lnInclude \
+    -I$(LIB_SRC)/thermophysicalModels/basic/lnInclude \
+    -I$(LIB_SRC)/transportModels/compressible/lnInclude \
+    -I$(LIB_SRC)/TurbulenceModels/turbulenceModels/lnInclude \
+	-I/home/dariomar/OpenFOAM/dariomar7/src/TurbulenceModels/compressible/lnInclude \
+    -I$(LIB_SRC)/TurbulenceModels/phaseCompressible/lnInclude \
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(LIB_SRC)/meshTools/lnInclude \
+	-I$(LIB_SRC)/sampling/lnInclude \
+	-I./scalar \
+	-I./fluid \
+	-I./solid \
+	-I./porousFluid \
+	-I./porousSolid \
+	-I$(LIB_SRC)/finiteVolume/cfdTools \
+	-I$(LIB_SRC)/ODE/lnInclude \
+	-I$(LIB_SRC)/thermophysicalModels/specie/lnInclude \
+	-I$(LIB_SRC)/thermophysicalModels/reactionThermo/lnInclude \
+	-I$(LIB_SRC)/thermophysicalModels/solidThermo/lnInclude \
+	-I$(LIB_SRC)/thermophysicalModels/chemistryModel/lnInclude \
+	-I$(LIB_SRC)/combustionModels/lnInclude \
+	-I$(LIB_SRC)/radiationModels/lnInclude \
+	-I$(LIB_SRC)/regionModels/regionModel/lnInclude
+
+
+EXE_LIBS = \
+	$(FOAM_USER_LIBBIN)/libreactingPhaseSystem.so \
+	$(FOAM_USER_LIBBIN)/libreactingTwoPhaseSystem.so \
+	$(FOAM_USER_LIBBIN)/libreactingEulerianInterfacialModels.so \
+	$(FOAM_USER_LIBBIN)/libreactingEulerianInterfacialCompositionModels.so \
+	$(FOAM_USER_LIBBIN)/libtwoPhaseReactingTurbulenceModels.so \
+    -lfiniteVolume \
+    -lfvOptions \
+    -lmeshTools \
+	-lsampling \
+	-lcompressibleTransportModels \
+	-lfluidThermophysicalModels \
+	-lspecie \
+	-lreactionThermophysicalModels \
+	-lsolidThermo \
+	-lchemistryModel \
+	-lradiationModels \
+	-lODE \
+	-lcombustionModels \
+	-lturbulenceModels \
+	-lradiationModels \
+	-lregionModels

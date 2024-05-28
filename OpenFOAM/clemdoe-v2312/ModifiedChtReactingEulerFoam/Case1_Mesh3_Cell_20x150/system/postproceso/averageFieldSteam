@@ -1,0 +1,17 @@
+    PromedioAlpha
+    {
+		type            volFieldValue;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        //outputControl   timeStep;
+		writeControl   writeTime;
+		writeFields     false;      
+		//log             true;       // log to screen?
+        //valueOutput     true;       // Write values at run-time output times?
+        source          cellZone; //all; // Type of cell source or all for the full domain
+		operation       average; //volAverage; //Aca deberia ir average. Yo me equivoque y puse volAverage. Average es lo q reporta ANSYS
+        fields
+        (
+            alpha.steam 
+        );
+    }
+

@@ -1,0 +1,45 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2306                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [ 0 0 0 1 0 0 0 ];
+
+internalField   uniform 530;
+
+boundaryField
+{
+    #includeEtc "caseDicts/setConstraintTypes"
+
+    ".*"
+    {
+        type            zeroGradient;
+    }
+
+    "heater_to_.*"
+    {
+        type            compressible::turbulentTemperatureTwoPhaseRadCoupledMixed;
+        value           uniform 530;
+        Tnbr            T.liquid;
+        kappaMethod     solidThermo;
+        region          solid;
+        // Name of the other phase in the flid region mixing with 'liquid' phase
+        otherPhase      gas;
+        qrNbr           none;
+        qr              none;
+    }
+}
+
+
+// ************************************************************************* //

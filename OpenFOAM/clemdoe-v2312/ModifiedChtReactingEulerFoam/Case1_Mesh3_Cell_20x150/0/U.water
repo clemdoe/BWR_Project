@@ -1,0 +1,56 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  7
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    location    "0";
+    object      U.water;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform (0 0 1.037132);
+
+boundaryField
+{
+    inlet
+    {
+        type               	fixedValue;
+		value           uniform (0 0 1.037132);
+       	//massFlowRate       	constant 0.0023283; 
+	// Caudal total 900 kg/sm2 => Si el tubo tiene 0.000186265 m2 
+	//entonces si solo simula 1/72 de 360 grados me da ese caudal
+    }
+    outlet
+    {
+        type            pressureInletOutletVelocity;
+        phi             phi.water;
+        value           uniform (0 0 1.037132);
+    }
+    
+	back
+    {
+        type            wedge;
+    }
+
+    front
+    {
+        type            wedge;
+    }
+
+    pared
+    {
+        type            noSlip; 
+    }
+}
+
+
+// ************************************************************************* //

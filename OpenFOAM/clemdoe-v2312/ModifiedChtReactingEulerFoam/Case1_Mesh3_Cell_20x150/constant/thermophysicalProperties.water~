@@ -1,0 +1,59 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      thermophysicalProperties.liquid;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+thermoType
+{
+    type            heRhoThermo;
+    mixture         pureMixture;
+    transport       const;
+    thermo          hRefConst;
+    equationOfState rhoConst;
+    specie          specie;
+    energy          sensibleEnthalpy;
+}
+
+dpdt no;
+
+mixture
+{
+    specie
+    {
+        molWeight       18.02; //18.0153;
+    }
+    equationOfState
+    {
+        //R           3000;
+        //rho0        787.61;
+        rho        787.9; //Dato sacado del tutorial de ANSYS: 787.9; // Dato que calcule yo: 787.61;
+    }
+    thermodynamics
+    {
+        Hf          0;
+        Cp          4922; //Dato que saque del tutorial de ANSYS: 4922; //Dato que habia calculado yo: 4949.2;
+        Tref        530.6; //Este valor sale de calcular Tsaturacion - Tsubcoolinlquido 472.4; //Esto habia puesto yo antes: 530.6;
+        Href        1.1221e6; //En el tutorial de ANSYS figura una ReferEnthLiq = 0; // Ojo con esto!! Esto lo habia calculado yo: 1.1221e6;
+    }
+    transport
+    {
+        mu          1.07e-4; //1.028e-4;
+        Pr          0.8680132; //0.8357;
+    }
+}
+
+
+
+// ************************************************************************* //

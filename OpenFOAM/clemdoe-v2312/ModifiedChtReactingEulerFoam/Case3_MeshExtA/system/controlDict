@@ -1,0 +1,89 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    location        "system";
+    object          controlDict;
+}
+
+application     reactingTwoPhaseEulerFoam_Modif1;
+
+startFrom       latestTime; 
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         20;
+
+deltaT          0.0001;
+
+writeControl    adjustableRunTime;  
+
+writeInterval   0.5; 
+
+purgeWrite      10;
+
+writeFormat     ascii;
+
+writePrecision  9;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable yes;
+
+adjustTimeStep  yes;
+
+maxCo           0.75;
+
+maxDeltaT       0.05;
+
+maxDi       70;
+
+
+
+functions
+{
+	
+	#include "postproceso/maxFields"	
+
+	#include "postproceso/alphaAverageOutlet"	
+
+	#include "postproceso/TAverageOutletPrimario"
+
+	#include "postproceso/TAverageOutletSecundario"	
+
+//  	#include "postproceso/averageFieldSteam"	
+
+  	#include "postproceso/rhoPhiSecundario"	
+
+	#include "postproceso/caudalPrimario"	
+	
+	#include "postproceso/averageFields"	
+
+	#include "postproceso/averageFieldsAnulo"	
+		
+	#include "postproceso/planospromedios"	
+
+	#include "postproceso/planospromediosAnulo"
+
+	//#include "postproceso/rhoPhiSecundarioMean"	
+
+
+}
+
+
+
+// ************************************************************************* //

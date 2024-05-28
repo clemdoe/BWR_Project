@@ -1,0 +1,1069 @@
+//Mido los valores promedios en planos sucesivos
+		Plano0
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano0;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+
+		Plano1
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano1;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.05);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean 
+				);
+        }
+
+		Plano2
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano2;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.1);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano3
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano3;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.15);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano4
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano4;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.2);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano5
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl    writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano5;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.25);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano6
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano6;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.3);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano7
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano7;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.35);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano8
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano8;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.4);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+
+		Plano9
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano9;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.45);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano10
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano10;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.5);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano11
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano11;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.55);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano12
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano12;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.6);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano13
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano13;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.65);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano14
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano14;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.7);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano15
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano15;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.75);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano16
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano16;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.8);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano17
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano17;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.85);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano18
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano18;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.9);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano19
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano19;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 0.95);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano20
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano20;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.00);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano21
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano21;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.05);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano22
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano22;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.1);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano23
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano23;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.15);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano24
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano24;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.2);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano25
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano25;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.25);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano26
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano26;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.3);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano27
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano27;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.35);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano28
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano28;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.4);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano29
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano29;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.45);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano30
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano30;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.5);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano31
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano31;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.55);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano32
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano32;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.6);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano33
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano33;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.65);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano34
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano34;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.7);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano35
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano35;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.75);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano36
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano36;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.8);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano37
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano37;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.85);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano38
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano38;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.9);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano39
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano39;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.95);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+
+		Plano40
+        {
+                type            surfaceFieldValue;
+                functionObjectLibs ("libfieldFunctionObjects.so");
+				writeControl     writeTime;        		
+				writeFields     false;                
+				regionType      sampledSurface;
+                name			Plano40;
+				sampledSurfaceDict
+				{
+					planeType       pointAndNormal;
+					pointAndNormalDict
+					{
+							point   (0.00384 0 1.99);
+							normal  (0 0 1);
+						}
+					type            plane;    
+				}
+				
+				operation       average;
+				fields
+				(
+				    alpha.steam alpha.steamMean T.waterMean T.water U.waterMean U.steamMean U.steam iDmdt.steamAndWaterMean wDmdt.steamAndWaterMean
+				);
+        }
+

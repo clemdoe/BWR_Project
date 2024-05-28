@@ -1,0 +1,297 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+convertToMeters 1;
+
+
+//- La mitad del angulo que se va a simular
+halfAngle 0.15;
+
+// Datos del experimento de FC 72
+//- Radio del tubo interior [m]
+/*rti 0.00405; //Diametro: 0.0081 m = 8.1 mm
+
+//- Radio del tubo experior [m]
+rte 0.00475; //Diametro: 0.0095 m = 9.5 mm
+
+//- Radio del anulos interior [m]
+rai 0.00705; //Diametro: 0.0141 m = 14.1 mm
+*/
+
+// Datos del experimento nuevo doble Tubo Agua/Agua similar a bartomej
+//- Radio del tubo interior [m]
+rti 0.0077; //Diametro: 15.4 mm = 0.0154 m
+
+//- Radio del tubo experior [m]
+rte 0.0087; //Diametro: 17.4 mm = 0.0174 m
+
+//- Radio del anulos interior [m]
+rai 0.0174; //Diametro: 34.8 mm = 0.0348 mm
+
+
+
+//- Altura del tubo [m]
+//l 0.3; //Altura experimento FC-72
+l 2.0;
+
+// Extension dominio arriba
+l1 3.5;
+
+// Extension dominio abajo
+l2 -1.5;
+
+radHalfAngle    #calc "degToRad($halfAngle)";
+
+y1 	#calc "$rti*sin($radHalfAngle)";
+y2 	#calc "$rte*sin($radHalfAngle)";
+y3 	#calc "$rai*sin($radHalfAngle)";
+
+x1	#calc "$rti*cos($radHalfAngle)";
+x2	#calc "$rte*cos($radHalfAngle)";
+x3	#calc "$rai*cos($radHalfAngle)";
+
+y1min	#calc "-1.0*$y1";
+y2min	#calc "-1.0*$y2";
+y3min	#calc "-1.0*$y3";
+
+
+
+// Cantidad de celdas
+//La cantidad de Celdas adoptadas inicialmente son equivaletes al caso 
+//de Bartolomej de 150 x 20 celdas.
+// Celdas en la vertical
+cellV 75;
+cellV1 56;
+// Celdas en profundidad (si es 2D se pone 1)
+cellP 1;
+// Celdas radiales - Tubo
+//Malla A - 100 / 20 / 5 / 30
+//Malla B - 150 / 30 / 5 / 30
+//Malla C - 150 / 40 / 5 / 40
+
+//Mallas extendidas
+//Malla A - 100 / 20 / 5 / 30
+//Malla B - 100 / 40 / 5 / 30
+//Malla C - 100 / 50 / 5 / 30
+
+//Malla A - 100 / 20 / 5 / 30
+//Malla B - 150 / 30 / 10 / 30
+//Malla C - 75 / 10 / 5 / 30
+
+cellR1 10;
+
+// Celdas radiales - solido
+cellR2 5;
+
+// Celdas radiales - anulo
+cellR3 30;
+
+vertices
+(
+
+	//Vertices parte interio tubo z = 0
+    (0       0          0)		// Vertice 0
+	($x1	$y1min		0)		// Vertice 1
+	($x1	$y1			0)		// Vertice 2
+	($x2	$y2min		0)		// Vertice 3
+	($x2	$y2			0)		// Vertice 4
+	($x3	$y3min		0)		// Vertice 5
+	($x3	$y3			0)		// Vertice 6
+
+    (0       0          $l)		// Vertice 7
+	($x1	$y1min		$l)		// Vertice 8
+	($x1	$y1			$l)		// Vertice 9
+	($x2	$y2min		$l)		// Vertice 10
+	($x2	$y2			$l)		// Vertice 11
+	($x3	$y3min		$l)		// Vertice 12
+	($x3	$y3			$l)		// Vertice 13
+
+
+//Extension dominio arriba
+
+    (0       0          $l1)		// Vertice 14
+	($x1	$y1min		$l1)		// Vertice 15
+	($x1	$y1			$l1)		// Vertice 16
+	($x2	$y2min		$l1)		// Vertice 17
+	($x2	$y2			$l1)		// Vertice 18
+	($x3	$y3min		$l1)		// Vertice 19
+	($x3	$y3			$l1)		// Vertice 20
+
+//Extension dominio abajo
+
+    (0       0          $l2)		// Vertice 21
+	($x1	$y1min		$l2)		// Vertice 22
+	($x1	$y1			$l2)		// Vertice 23
+	($x2	$y2min		$l2)		// Vertice 24
+	($x2	$y2			$l2)		// Vertice 25
+	($x3	$y3min		$l2)		// Vertice 26
+	($x3	$y3			$l2)		// Vertice 27
+
+
+);
+
+
+blocks
+(
+	//Bloques acoplamiento
+    hex (0 1 2 0 7 8 9 7) region0 ($cellR1 $cellP $cellV) simpleGrading (1 1 1)
+    hex (1 3 4 2 8 10 11 9) solido ($cellR2 $cellP $cellV) simpleGrading (1 1 1)
+    hex (3 5 6 4 10 12 13 11) anulo ($cellR3 $cellP $cellV) simpleGrading (1 1 1)
+
+	//Bloques arriba
+//    hex (7 8 9 7 14 15 16 14) ($cellR1 $cellP $cellV) simpleGrading (1 1 1)
+//    hex (10 12 13 11 17 19 20 18) ($cellR3 $cellP $cellV) simpleGrading (1 1 1)
+    hex (7 8 9 7 14 15 16 14) region0 ($cellR1 $cellP $cellV1) simpleGrading (1 1 1)
+    hex (10 12 13 11 17 19 20 18) anulo ($cellR3 $cellP $cellV1) simpleGrading (1 1 1)
+	//Bloques abajo
+//    hex (21 22 23 21 0 1 2 0) ($cellR1 $cellP $cellV) simpleGrading (1 1 1)
+//    hex (24 26 27 25 3 5 6 4) ($cellR3 $cellP $cellV) simpleGrading (1 1 1)
+      hex (21 22 23 21 0 1 2 0) region0 ($cellR1 $cellP $cellV1) simpleGrading (1 1 1)
+      hex (24 26 27 25 3 5 6 4) anulo ($cellR3 $cellP $cellV1) simpleGrading (1 1 1)
+
+);
+
+edges
+(
+	//Arcos region acoplada
+    arc 1 2 (0 $rti 0)
+    arc 8 9 (0 $rti $l)
+    arc 3 4 (0 $rte 0)
+    arc 10 11 (0 $rte $l)
+    arc 5 6 (0 $rai 0)
+    arc 12 13 (0 $rai $l)
+
+	//Arcos region superior
+	arc 15 16 (0 $rti $l1)
+    arc 17 18 (0 $rte $l1)
+    arc 19 20 (0 $rai $l1)
+
+	//Arcos region inferior
+	arc 22 23 (0 $rti $l2)
+    arc 24 25 (0 $rte $l2)
+    arc 26 27 (0 $rai $l2)
+);
+
+
+boundary
+(
+    front
+    {
+        type wedge;
+        faces
+        (
+			
+			(0 1 8 7)
+			(1 3 10 8)
+			(3 5 12 10)
+//			(21 14 15 22)
+//			(24 17 19 26)
+			//Region extendida arriba
+			(7 8 15 14)
+			(10 12 19 17)
+			//Region extendida abajo
+			(21 22 1 0)
+			(24 26 5 3)
+        );
+    }
+    back
+    {
+        type wedge;
+        faces
+        (
+			(0 7 9 2)
+			(2 9 11 4)
+			(4 11 13 6)	
+			//Region extendida arriba
+			(7 14 16 9)
+			(11 18 20 13)
+			//Region extendida abajo
+			(21 0 2 23)
+			(25 4 6 27)
+        );
+    }
+    outlet_primario
+    {
+        type patch;
+        faces
+        (
+            //(3 4 6 5)
+            (24 25 27 26)
+        );
+    }
+    inlet_primario
+    {
+        type patch;
+        faces
+        (
+           // (10 12 13 11)            
+			(17 19 20 18)
+        );
+    }
+
+    outlet_secundario
+    {
+        type patch;
+        faces
+        (
+	//	(7 8 9 7)
+		(14 15 16 14)
+        );
+    }
+    inlet_secundario
+    {
+        type patch;
+        faces
+        (
+	//	(0 2 1 0)
+		(21 23 22 21)
+            
+        );
+    }
+
+    axis
+    {
+        type empty;
+        faces
+        (
+            (0 7 7 0)
+            (7 14 14 7)
+            (21 0 0 21)
+        );
+    }
+    pared
+    {
+        type wall;
+        faces
+        (
+            (12 5 6 13)
+            (8 10 11 9)
+            (1 2 4 3)
+			//Pared extendida arriba
+			(8 15 16 9)
+			(10 11 18 17)
+			(12 13 20 19)
+			//Pared extendida abajo
+			(22 1 2 23)	
+			(24 25 4 3)
+			(26 27 6 5)
+        );
+    }
+);
+
+
+// ************************************************************************* //

@@ -1,0 +1,60 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      thermophysicalProperties.liquid;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+thermoType
+{
+    type            heRhoThermo;
+    mixture         pureMixture;
+    transport       const;
+    thermo          hRefConst;
+    equationOfState rhoConst;
+    specie          specie;
+    energy          sensibleEnthalpy;
+}
+
+dpdt no;
+
+//Se actualizarion las propiedades termofisica para el delta de 
+//temperatura de RELAP
+
+mixture
+{
+    specie
+    {
+        molWeight       18.02; 
+    }
+    equationOfState
+    {
+        rho        843.25; 
+    }
+    thermodynamics
+    {
+        Hf          0;
+        Cp          4641.5; 
+        Tref        530.6;
+        Href        0; 
+    }
+    transport
+    {
+        mu          0.0001291735;
+        Pr          0.916075; 
+    }
+}
+
+
+
+// ************************************************************************* //

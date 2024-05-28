@@ -1,0 +1,21 @@
+// Alpha total a la salida
+	
+	Taverage_Secundario
+    {
+		//OpenFOAM 7		
+		type              surfaceFieldValue;
+        libs ("libfieldFunctionObjects.so");
+        enabled         true;
+		region          region0;
+        writeControl    timeStep; //writeTime;   
+        writeFields     false; //true;
+        regionType      patch;
+        name      		outlet_secundario;
+        // Operation: areaAverage/sum/weightedAverage ...
+        operation       areaAverage; //weightedAverage; // banana; //sum; 
+
+        fields
+        (
+            T.steam T.water       
+        );		
+    }

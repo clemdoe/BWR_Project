@@ -1,0 +1,329 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      phaseProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+type    thermalPhaseChangeTwoPhaseSystem;
+
+phases (gas liquid);
+
+phaseChange on;
+
+gas
+{
+    type            purePhaseModel;
+    diameterModel   isothermal;
+    constantCoeffs
+    {
+        d               3e-3; // Esto tenia el tutorial 0.00045;
+    }
+
+    isothermalCoeffs
+    {
+        d0               3e-3; //Esto tenia el tutorial 0.00045;
+        p0              1e5;
+    }
+    Sc              0.7;
+
+    residualAlpha   1e-4;
+
+	//Esto tenia seteado yo en los experimentos
+	/*diameterModel   constant;
+    constantCoeffs
+    {
+       d              3e-3; 
+    }
+
+    residualAlpha   1e-4;  
+	*/
+
+}
+
+liquid
+{
+    type            purePhaseModel;
+    diameterModel   constant;
+    constantCoeffs
+    {
+        d               3e-3; //Esto tenia el tutorial 0.00045;
+    }
+    Sc              0.7;
+
+    residualAlpha   1e-4;
+
+	//Esto tenia seteado yo en los experimentos
+	/*diameterModel   constant;
+    constantCoeffs
+    {
+       d              3e-3;
+    }
+
+    residualAlpha   1e-6;    
+	*/
+}
+
+/*blending
+{
+    default
+    {
+        type            none; //linear
+        continuousPhase liquid;
+		//Esto lo tenia seteado yo para el caso lineal		
+		maxFullyDispersedAlpha.air 0.3;
+        maxPartlyDispersedAlpha.air 0.5;
+        maxFullyDispersedAlpha.water 0.3;
+        maxPartlyDispersedAlpha.water 0.5;
+
+    }
+}*/
+
+
+blending
+{
+    default
+    {
+        type            none;
+        continuousPhase liquid;
+    }
+}
+
+
+
+surfaceTension
+(
+	sigma
+	(
+		(air and water)     0.07
+	);
+
+);
+
+saturationModel
+{
+        type constant;
+
+        Tsat 530.6;
+        pSat 4.5e6;
+};
+/*{
+   /* type function1;
+
+    function csvFile;
+    functionCoeffs
+    {
+        nHeaderLine         1;
+        refColumn           0;
+        componentColumns    (1);
+        separator           ",";
+        mergeSeparators     no;
+        file                "Tsat_water_1_2bar.csv";
+        outOfBounds         clamp;
+        interpolationScheme linear;
+    };
+};*/
+
+aspectRatio
+(
+//Esto lo tenia implementado yo en el trabajo
+/*
+    (gas in liquid)
+    {
+        type            constant;
+        E0              1.255;
+    }
+
+    (liquid in gas)
+    {
+        type            constant;
+        E0              1.255;
+    }
+*/
+);
+
+drag
+(
+	//Esto estaba en el tutorial
+    /*(gas in liquid)
+    {
+        type            SchillerNaumann;
+        residualRe      1e-3;
+        swarmCorrection
+        {
+            type        none;
+        }
+    }*/
+
+
+    (gas in liquid)
+    {
+		//Esto lo tengo que implementar en
+		// el reactingTwoPhaseEulerFoam
+        /*type            Grace; 
+		A		16;
+        residualAlpha   1e-6;
+        residualRe      1e-6;
+		muref1          0.0009;
+		gref		9.81;		        
+		swarmCorrection
+        {
+            type        none;
+        }*/
+  	
+      	type            TomiyamaCorrelated; //SchillerNaumann;
+		A		16;        
+		residualRe      1e-3;
+		residualAlpha   1e-3;        
+        swarmCorrection
+        {
+            type        none;
+        }	
+
+    }
+
+    (liquid in gas)
+    {
+      	type            TomiyamaCorrelated; //SchillerNaumann;
+		A		16;        
+		residualRe      1e-3;
+		residualAlpha   1e-3;        
+        swarmCorrection
+        {
+            type        none;
+        }
+    }
+
+    (gas and liquid)
+    {
+        type            segregated;
+        m               0.5;
+        n               8;
+        swarmCorrection
+        {
+            type        none;
+        }
+    }
+
+);
+
+virtualMass
+(
+    (gas in liquid)
+    {
+        type            constantCoefficient;
+        Cvm             0.5;
+    }
+
+    (liquid in gas)
+    {
+        type            constantCoefficient;
+        Cvm             0.5;
+    }
+);
+
+heatTransfer.gas
+(
+    (gas in liquid)
+    {
+		type            RanzMarshall;
+        residualAlpha   1e-3;
+		//Esto estaba en el tutorial
+        //type spherical;
+        //residualAlpha 1e-3;
+    }
+);
+
+heatTransfer.liquid
+(
+    (gas in liquid)
+    {
+        type RanzMarshall;
+        residualAlpha 1e-3;
+    }
+);
+
+
+phaseTransfer
+();
+
+lift
+(
+  	(gas in liquid)
+    {
+     	type            Tomiyama; //constantCoefficient; //Tomiyama
+    }
+	/*
+  	(liquid in gas)
+    {
+     	type            Tomiyama; //none; //constantCoefficient; //Tomiyama
+    }
+	*/
+);
+
+wallLubrication
+(
+	(gas in liquid)
+    {
+     	type            Frank; //Tomiyama; //constantCoefficient; //Tomiyama 
+        Cwd             6.8; // 10;
+   		Cwc				10; //8.5;
+    	p				1.7;
+ 		//Los valores para las constantes de Frank los saque de la siguiente pagina
+		//https://www.sharcnet.ca/Software/Ansys/16.2.3/en-us/help/flu_th/flu_th_sec_eulermp_walllube.html#flu_th_sec_eulermp_wl_Frank
+        
+    }
+	/*(liquid in gas)
+    {
+     	type            Frank; //Tomiyama; //constantCoefficient; //Tomiyama 
+        Cwd             6.8; // 10;
+   		Cwc		10; //8.5;
+    	p		1.7;
+ 		//Los valores para las constantes de Frank los saque de la siguiente pagina
+		//https://www.sharcnet.ca/Software/Ansys/16.2.3/en-us/help/flu_th/flu_th_sec_eulermp_walllube.html#flu_th_sec_eulermp_wl_Frank
+    }*/
+);
+
+turbulentDispersion
+(
+    (gas in liquid)
+    {
+ 		type                Burns; //LopezDeBertodano; //LopezDeBertodano; //Burns; //LopezDeBertodano; //Gosman; //Burns;//
+        sigma               0.7; //0.7 --> Burns; // 0.9 --> Lopez Bertodano;
+        Ctd                 1; //1.0;  //1.0 --> Burns; // 0.35 --> Lopez Bertodano;
+        residualAlpha       1e-3 ; // Este residual alpha es para que no te quede dividiendo por cero en la expresion de coficiente de dispersion
+    }
+	/*
+	(liquid in gas)
+    {
+     	type                Burns; //LopezDeBertodano; //LopezDeBertodano; //Burns; //LopezDeBertodano; //Gosman; //Burns;//
+        sigma               0.7; //0.7 --> Burns; // 0.9 --> Lopez Bertodano;
+        Ctd                 1; //1.0;  //1.0 --> Burns; // 0.35 --> Lopez Bertodano;
+        residualAlpha       1e-3 ; // Este residual alpha es para que no te quede dividiendo por cero en la expresion de coficiente de dispersion
+    
+    }*/
+
+);
+
+// Minimum allowable pressure
+pMin            10000;
+
+//Valor que tenia seteado yo
+pMin            1e-10;
+
+
+// ************************************************************************* //
+
+
+
+

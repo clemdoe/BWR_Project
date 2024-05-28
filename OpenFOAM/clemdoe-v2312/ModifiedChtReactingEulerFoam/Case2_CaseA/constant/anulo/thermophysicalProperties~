@@ -1,0 +1,55 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  7  
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant/shell";
+    object      thermophysicalProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+thermoType
+{
+    type            heRhoThermo;
+    mixture         pureMixture;
+    transport       const;
+    thermo          hConst;
+    equationOfState rhoConst;
+    specie          specie;
+    energy          sensibleEnthalpy;
+}
+
+mixture
+{
+    // Propiedades del agua para la temperatura de entrada Tinlet=344.35 K = 71.4oC
+	// Temperatura de saturacion 100oC = 373 K
+
+
+    specie
+    {
+        molWeight       18.02;
+    }
+    equationOfState
+    {
+        rho             977.7;
+    }
+    thermodynamics
+    {
+        Cp              4187;
+        Hf              0;
+    }
+    transport
+    {
+        mu              404e-6;
+        Pr              2.551;
+    }
+}
+
+// ************************************************************************* //
