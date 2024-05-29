@@ -70,6 +70,34 @@ structureProperties
 
         powerModel
         {
+            type                fixedPower;
+            volumeFraction  0.0937099273; //0.145493575;  
+            volumetricArea  121.08049093;//121.08049093;  //=heating surface area/cellzone volume
+            T                   615;
+            Cp                  500;
+            rho                 7700;
+            powerDensity        300000000;
+            //fuelInnerRadius     0.0012;
+            //- Outer radius of the fuel pellet. This entry IS MANDATORY
+            /* fuelOuterRadius     0.004715;
+            cladInnerRadius     0.004865;
+            cladOuterRadius     0.005365;
+            fuelMeshSize        30;
+            cladMeshSize        5;
+            fuelRho             10480;
+            fuelCp              250;
+            cladRho             7500;
+            cladCp              500;
+            gapH                3000;
+            //- Fuel thermal conductivity. This entry IS MANDATORY
+            fuelK               3;
+            cladK               20;
+            fuelT               668;
+            cladT               668; */
+        }
+
+        /* powerModel
+        {
             type            fixedPower;
 
             //- The heater "coats" 0.85 mm of the 4.75 mm radius pin, and 
@@ -131,7 +159,7 @@ structureProperties
                     );
             }
 
-        }
+        } */
     }
 }
 

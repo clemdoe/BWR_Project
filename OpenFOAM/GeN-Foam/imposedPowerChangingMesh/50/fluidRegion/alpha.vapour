@@ -18,28 +18,7 @@ FoamFile
 
 dimensions      [0 0 0 0 0 0 0];
 
-internalField   nonuniform List<scalar> 
-17
-(
-0
-0
-0
-0
-0
-0.0114769
-0.0279754
-0.0474847
-0.0680918
-0.0883834
-0.107364
-0.124333
-0.139414
-0.152817
-0.164751
-0.175225
-0.185547
-)
-;
+internalField   uniform 0;
 
 boundaryField
 {
@@ -55,7 +34,7 @@ boundaryField
         type            inletOutlet;
         phi             phi.vapour;
         inletValue      uniform 0;
-        value           uniform 0.185547;
+        value           uniform 0;
     }
     fixedWalls
     {

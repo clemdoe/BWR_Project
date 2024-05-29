@@ -18,28 +18,7 @@ FoamFile
 
 dimensions      [0 0 0 0 0 0 0];
 
-internalField   nonuniform List<scalar> 
-17
-(
-10
-10
-10
-10
-10
-10
-12.1338
-15.3298
-19.6405
-25.4416
-33.0583
-42.6336
-54.0229
-66.8115
-80.4747
-94.4798
-108.972
-)
-;
+internalField   uniform 10;
 
 boundaryField
 {

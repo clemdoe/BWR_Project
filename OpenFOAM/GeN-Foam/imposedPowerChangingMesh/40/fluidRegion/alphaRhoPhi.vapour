@@ -20,27 +20,7 @@ dimensions      [1 0 -1 0 0 0 0];
 
 oriented        oriented;
 
-internalField   nonuniform List<scalar> 
-16
-(
-0
-0
-0
-0
-0
-0.00053108
-0.00191962
-0.0040108
-0.0067977
-0.0102166
-0.0141652
-0.0184696
-0.0230168
-0.0277614
-0.0326462
-0.03762
-)
-;
+internalField   uniform 0;
 
 boundaryField
 {
@@ -52,7 +32,7 @@ boundaryField
     outlet
     {
         type            calculated;
-        value           uniform 0.0426468;
+        value           uniform 0;
     }
     fixedWalls
     {

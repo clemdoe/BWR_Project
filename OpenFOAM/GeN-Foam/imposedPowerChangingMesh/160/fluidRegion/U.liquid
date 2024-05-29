@@ -1,0 +1,64 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2312                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       volVectorField;
+    location    "160/fluidRegion";
+    object      U.liquid;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   nonuniform List<vector> 
+17
+(
+(7 0 0)
+(7 0 0)
+(6.99954 0 0)
+(6.99861 0 0)
+(6.99769 0 0)
+(6.99677 0 0)
+(6.99585 0 0)
+(6.99493 0 0)
+(6.99402 0 0)
+(6.99311 0 0)
+(6.9922 0 0)
+(6.9913 0 0)
+(6.99017 0 0)
+(6.99208 0 0)
+(6.99302 0 0)
+(6.99074 0 0)
+(6.98923 0 0)
+)
+;
+
+boundaryField
+{
+    inlet
+    {
+        type            fixedValue;
+        value           uniform (7 0 0);
+    }
+    outlet
+    {
+        type            pressureInletOutletVelocity;
+        phi             phi.liquid;
+        value           uniform (6.98923 0 0);
+    }
+    fixedWalls
+    {
+        type            slip;
+    }
+}
+
+
+// ************************************************************************* //

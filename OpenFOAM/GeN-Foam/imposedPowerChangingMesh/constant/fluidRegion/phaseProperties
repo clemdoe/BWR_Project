@@ -78,7 +78,7 @@ structureProperties
             //  fraction (with respect to the total mesh volume).
             volumeFraction  0.0937099273; //0.145493575;  
             volumetricArea  121.08049093;//121.08049093;  //=heating surface area/cellzone volume
-            powerDensity    5e8;//3.65e9;
+            powerDensity    8e8;//5e8;//3.65e9;
             T               615;
             Cp              500;
             rho             7700;
